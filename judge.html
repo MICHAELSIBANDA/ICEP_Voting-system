@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICEP AWARDS 2025 - Judge Nomination Portal</title>
+    <link rel="stylesheet" href="judge.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Screen 1: Login -->
+        <div class="screen active" id="screen-login">
+            <div class="header">
+                <h1>ICEP AWARDS 2025</h1>
+                <p>Judge Nomination Portal</p>
+            </div>
+            <div style="padding: 30px;">
+                <div class="judge-info">
+                    <strong>⚖️ JUDGE ACCESS</strong><br>
+                    <small>Evaluate and nominate outstanding student projects for awards</small>
+                </div>
+                
+                <div class="login-header">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to evaluate student projects</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="judgeEmail">Judge Email</label>
+                    <input type="email" id="judgeEmail" placeholder="e.g., name.surname@tut.ac.za" value="judge.smith@tut.ac.za">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" value="password">
+                </div>
+                <button class="btn btn-block" onclick="login()">LOG IN AS JUDGE</button>
+                
+                <div style="text-align: center; margin-top: 20px; color: #7f8c8d; font-size: 12px;">
+                    <p>Forgot Password? | Need Help?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 2: Project Nomination -->
+        <div class="screen" id="screen-nomination">
+            <div class="header">
+                <h1>Project Evaluations</h1>
+                <p>Judge: Evaluate and nominate outstanding student projects</p>
+            </div>
+            <div style="padding: 30px;">
+                <div class="progress-info" id="progressInfo">
+                    <!-- Progress information will be shown here -->
+                </div>
+
+                <div id="incompleteWarning" class="incomplete-categories" style="display: none;">
+                    <!-- Incomplete categories warning -->
+                </div>
+
+                <!-- Categories will be displayed here -->
+                <div id="categories-container">
+                    <!-- Categories will be dynamically populated -->
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-dashboard')">← BACK TO DASHBOARD</button>
+                    <button class="btn btn-success" id="submitBtn" onclick="confirmSubmission()">SUBMIT ALL EVALUATIONS</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 3: Dashboard -->
+        <div class="screen" id="screen-dashboard">
+            <div class="header">
+                <h1>Welcome, <span id="userName">JUDGE SMITH</span></h1>
+                <p>ICEP Awards 2025 - Judge Dashboard</p>
+            </div>
+            <div style="padding: 30px;">
+                <div class="form-group">
+                    <h3 style="margin-bottom: 15px;">📋 MY PROJECT EVALUATIONS 
+                        <span id="completedBadge" class="completed-badge" style="display: none;">COMPLETED</span>
+                    </h3>
+                    <div id="nominationList">
+                        <!-- Nominations will be displayed here -->
+                    </div>
+                    <div class="view-all-btn" id="viewAllBtn" style="display: none;">
+                        <button class="btn btn-outline" onclick="showAllNominations()">View All Evaluations</button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <h3 style="margin-bottom: 15px;">🚀 QUICK ACTIONS</h3>
+                    <button class="btn btn-block" id="nominationBtn" onclick="showScreen('screen-nomination')">+ EVALUATE PROJECTS</button>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px; color: #7f8c8d; font-size: 12px;">
+                    <p>Evaluation Period: Jan 15 - Feb 15, 2025</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 4: All Nominations View -->
+        <div class="screen" id="screen-all-nominations">
+            <div class="header">
+                <h1>All My Project Evaluations</h1>
+                <p>Complete overview of your project evaluations</p>
+            </div>
+            <div style="padding: 30px;">
+                <div id="allNominationsList">
+                    <!-- All nominations will be displayed here -->
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-dashboard')">← BACK TO DASHBOARD</button>
+                    <button class="btn" onclick="showScreen('screen-nomination')">EDIT EVALUATIONS</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 5: Confirmation -->
+        <div class="screen" id="screen-confirmation">
+            <div class="header">
+                <h1>Evaluations Submitted!</h1>
+                <p>Thank you for your participation</p>
+            </div>
+            <div style="padding: 30px;">
+                <div class="confirmation-icon">✅</div>
+                
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h3 style="color: #27ae60; margin-bottom: 20px;">ALL PROJECT EVALUATIONS SUBMITTED SUCCESSFULLY!</h3>
+                    <p style="color: #7f8c8d; margin-bottom: 20px;">Thank you for evaluating outstanding student projects!</p>
+                    
+                    <div id="submission-summary" style="text-align: left; background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                        <!-- Submission summary will appear here -->
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-block" onclick="showScreen('screen-dashboard')">BACK TO DASHBOARD</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="confirmation-modal" id="confirmationModal" style="display: none;">
+        <div class="modal-content">
+            <div class="confirmation-icon">⚠️</div>
+            <h3 style="margin-bottom: 15px;">Confirm Submission</h3>
+            <p style="margin-bottom: 20px; color: #7f8c8d;">You are about to submit your project evaluations. This action cannot be undone. Are you sure you want to proceed?</p>
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="closeConfirmation()">CANCEL</button>
+                <button class="btn btn-success" onclick="submitAllNominations()">YES, SUBMIT EVALUATIONS</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Updated project data organized by campus with all teams
+        const projects = [
+            // Soshanguve Campus Projects
+            { 
+                id: 'PROJ001', 
+                name: 'EDUCONNECT', 
+                team: 'Ambiwe Masingi, Siphiweyinko Zulu, Lesego Mokoena, Mandlekosi Nyathi, Tondani Mabasa, Tshepo Setuke, Kagiso Lebyana, Ramphelane Kgopa, Lethabo Letswalo, Xolane Shabalala, Connie Mokabane, Kagiso Mogashoa, Lucky Madigoe, Phokuhle Dlamini, Blessing Ntshodwe, Kamogelo Mathiane',
+                description: 'Educational platform connecting students with resources and support services.',
+                category: 'Educational Technology',
+                year: '2025',
+                campus: 'Soshanguve'
+            },
+            { 
+                id: 'PROJ002', 
+                name: 'DOCSECURE', 
+                team: 'Nzuzo Khanyile, Precious Hlahla, Siphokuhle Komeni, Boitumelo Molekoa, Hluleko Hobyani, Junior Selatlha, Koketso Boya, Vuthlare Rikhotso',
+                description: 'Secure document management and sharing system for academic institutions.',
+                category: 'Security',
+                year: '2025',
+                campus: 'Soshanguve'
+            },
+            { 
+                id: 'PROJ003', 
+                name: 'TUTReport HUB', 
+                team: 'Joe Junior Mabatha, Joina Mofokeng, Xolani Nkabinde, Kamogelo Mokhomole, Kenny Mnisi, Unarine Bryan Nevhutalu, Kearabetswe Maroleni, Prince Matsekoleng, Ndabisukile Ndabisukile, Yinhla Ndlovu, Nkosingiphile Nkalanga, Joy Mthethwa, Siphiweyinko Zulu, Siphelele Miya, Vhahangwele Mutheiwana',
+                description: 'Centralized platform for academic reporting and analytics.',
+                category: 'Academic Systems',
+                year: '2025',
+                campus: 'Soshanguve'
+            },
+            { 
+                id: 'PROJ004', 
+                name: 'COMPUTING TRACK SYSTEM (TUT GUIDE APP)', 
+                team: 'Yamkela Zele, Nonjabulo Guma, Innocent Mabasa, Chantelle Moeng, Sihle Mathole, Phodiso Ramushu, Kaizer Maphoso, Kamogelo Mokhomole',
+                description: 'Campus navigation and information system for TUT students.',
+                category: 'Mobile Development',
+                year: '2025',
+                campus: 'Soshanguve'
+            },
+            { 
+                id: 'PROJ005', 
+                name: 'INTELLIGENT SERVICE DELIVERY (MunicipalityHub)', 
+                team: 'Phiwe Mzizi, Sifiso Jantjie, Olerato Manye, Leago Shalang, Della Raolane, Khomotjo Modiba, Dimpho Tukane',
+                description: 'Smart platform connecting citizens with municipal services through IoT and data analytics.',
+                category: 'Smart Cities',
+                year: '2025',
+                campus: 'Soshanguve'
+            },
+            { 
+                id: 'PROJ006', 
+                name: 'DIGIFIKILE (EduBridge)', 
+                team: 'Lethabo Tlala, Mandlenkosi Nyathi, Inamfumu Ketsia Mwanza, Siphelele Miya, Kearabetswe Maroleni, Xolane Shabalala, Lucky Madigoe, Siphiweyinkosi Zulu',
+                description: 'Gamified mobile app teaching digital skills to township and rural youth.',
+                category: 'Educational Technology',
+                year: '2025',
+                campus: 'Soshanguve'
+            },
+            { 
+                id: 'PROJ007', 
+                name: 'SPORTS PERFORMANCE APP', 
+                team: 'Ntombi Manonga, Matome Maake, Katlego Sebola, Brace Mathabela, Tokollo Setetemela, Thabiso Bokaba, Jabulile Mhlanga, Tiyiselani Mlangeni',
+                description: 'Wearable-powered app capturing athlete metrics and delivering performance insights.',
+                category: 'Sports Technology',
+                year: '2025',
+                campus: 'Soshanguve'
+            },
+            
+            // Polokwane Campus Projects
+            { 
+                id: 'PROJ008', 
+                name: 'FUEL MANAGEMENT SYSTEM (LiquiTech)', 
+                team: 'Kulani Shaun Mabasa, Mkhuleko Shongwe, Kamogelo Taylor Mmekwa, Neo Terrence Mkhabela, Melusi Hopewell Mathebula, Bothale Mpatlanyane',
+                description: 'Application tracking fuel management and preventing theft in diesel supply fleets.',
+                category: 'Logistics Technology',
+                year: '2025',
+                campus: 'Polokwane'
+            },
+            { 
+                id: 'PROJ009', 
+                name: 'e-LibraryLog', 
+                team: 'Asisipho Mjojeli, Ronewa Nthabeni, Khensani Khoza, Kamogelo Thlong, Samukelo Khumalo, Tshepo Mtungwa, Lesego Molalatladi, Asimbonge Msizi, Madimetja Kgobe, Mpho Ramaloko, Nokwanda Hlatshwayo, Thabiso Mapoulo',
+                description: 'Digital library management and tracking system.',
+                category: 'Educational Resources',
+                year: '2025',
+                campus: 'Polokwane'
+            },
+            
+            // eMalahleni Campus Project
+            { 
+                id: 'PROJ010', 
+                name: 'CampusTime', 
+                team: 'Nkgasha Matlou, Ndivho Ramatshimbila, Musawekosi Manzini, Shauntel Mtshweni, Lindokuhle Zulu, Kgethego Mabilo, Kgomotso Ngomane, Adel Baloyi, Amogelang Thomson, Bokang Malebo, Lindani Mayisela, Nomcebo Kubheka, Keabetswe Anta, Mashudu Nemutudi, Mapoulo Manuel',
+                description: 'Campus scheduling and time management platform.',
+                category: 'Productivity',
+                year: '2025',
+                campus: 'eMalahleni'
+            }
+        ];
+
+        // Updated categories with the new names
+        const categories = {
+            'semester': 'Top Semester Project (All Campus)',
+            'mobile': 'Top Mobile Application Project', 
+            'web': 'Top Web Application Project'
+        };
+
+        const categoryIcons = {
+            'semester': '🏆',
+            'mobile': '📱', 
+            'web': '🌐'
+        };
+
+        const campusIcons = {
+            'Soshanguve': '🏢',
+            'Polokwane': '🏛️',
+            'eMalahleni': '🏭'
+        };
+
+        let currentJudge = null;
+        let allNominations = [];
+        let submissionsClosed = false;
+        let showAllOnDashboard = false;
+
+        // Create category sections dynamically
+        function createCategorySections() {
+            const container = document.getElementById('categories-container');
+            container.innerHTML = '';
+            
+            Object.keys(categories).forEach(category => {
+                const categorySection = document.createElement('div');
+                categorySection.className = 'category-section';
+                categorySection.innerHTML = `
+                    <div class="category-header">
+                        <span>${categoryIcons[category]} ${categories[category]}</span>
+                        <span class="status-badge status-pending" id="status-${category}">PENDING</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Select Project to Evaluate:</label>
+                        <div class="search-box">
+                            <input type="text" id="search-${category}" placeholder="Search projects..." onkeyup="filterProjects('${category}')">
+                        </div>
+                        <div id="${category}-projects">
+                            <!-- Projects for this category will be populated here -->
+                        </div>
+                        <div class="project-count" id="${category}-count"></div>
+                    </div>
+
+                    <div id="${category}-nominations">
+                        <!-- Nominations for this category will appear here -->
+                    </div>
+                `;
+                container.appendChild(categorySection);
+            });
+        }
+
+        // Update progress information
+        function updateProgressInfo() {
+            const completedCount = allNominations.length;
+            const totalCategories = Object.keys(categories).length;
+            const progressInfo = document.getElementById('progressInfo');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            progressInfo.innerHTML = `
+                <strong>Evaluation Progress:</strong> ${completedCount}/${totalCategories} categories completed
+                ${completedCount === totalCategories ? 
+                    '<span style="color: #27ae60; margin-left: 10px;">✓ Ready to submit!</span>' : 
+                    '<span style="color: #e74c3c; margin-left: 10px;">Please complete all categories</span>'
+                }
+            `;
+
+            // Update submit button state
+            submitBtn.disabled = completedCount !== totalCategories;
+        }
+
+        // Update category status badges
+        function updateCategoryStatus() {
+            Object.keys(categories).forEach(category => {
+                const nomination = allNominations.find(nom => nom.category === category);
+                const statusElement = document.getElementById(`status-${category}`);
+                
+                if (nomination) {
+                    statusElement.textContent = 'COMPLETED';
+                    statusElement.className = 'status-badge status-completed';
+                } else {
+                    statusElement.textContent = 'PENDING';
+                    statusElement.className = 'status-badge status-pending';
+                }
+            });
+        }
+
+        // Show incomplete categories warning
+        function updateIncompleteWarning() {
+            const incompleteWarning = document.getElementById('incompleteWarning');
+            const incompleteCategories = Object.keys(categories).filter(category => {
+                const nomination = allNominations.find(nom => nom.category === category);
+                return !nomination;
+            });
+
+            if (incompleteCategories.length > 0) {
+                incompleteWarning.style.display = 'block';
+                incompleteWarning.innerHTML = `
+                    <strong>⚠️ Incomplete Categories:</strong> 
+                    Please complete evaluations for: ${incompleteCategories.map(cat => categories[cat]).join(', ')}
+                `;
+            } else {
+                incompleteWarning.style.display = 'none';
+            }
+        }
+
+        // Update dashboard nominations list (showing only 2 nominations)
+        function updateDashboardNominations() {
+            const nominationList = document.getElementById('nominationList');
+            const viewAllBtn = document.getElementById('viewAllBtn');
+            
+            if (allNominations.length === 0) {
+                nominationList.innerHTML = `
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        <div style="font-weight: 600;">No project evaluations yet</div>
+                        <div style="color: #7f8c8d; font-size: 12px; margin-top: 5px;">Start evaluating projects to see them here</div>
+                    </div>
+                `;
+                viewAllBtn.style.display = 'none';
+            } else {
+                // Show only first 2 nominations
+                const displayedNominations = showAllOnDashboard ? allNominations : allNominations.slice(0, 2);
+                const hiddenCount = allNominations.length - displayedNominations.length;
+                
+                nominationList.innerHTML = displayedNominations.map(nomination => `
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        <div style="font-weight: 600;">${categories[nomination.category]}</div>
+                        <div style="color: #7f8c8d; font-size: 12px;">Project: ${nomination.project.name}</div>
+                        <div style="color: #7f8c8d; font-size: 11px;">Team: ${nomination.project.team}</div>
+                        <div style="color: #27ae60; font-size: 12px; margin-top: 5px;">
+                            ✓ Completed
+                        </div>
+                    </div>
+                `).join('');
+
+                // Show "View All" button if there are more than 2 nominations
+                if (allNominations.length > 2 && !showAllOnDashboard) {
+                    viewAllBtn.style.display = 'block';
+                    viewAllBtn.innerHTML = `
+                        <button class="btn btn-outline" onclick="showAllNominations()">
+                            View All Evaluations (${hiddenCount} more)
+                        </button>
+                    `;
+                } else if (showAllOnDashboard) {
+                    viewAllBtn.style.display = 'block';
+                    viewAllBtn.innerHTML = `
+                        <button class="btn btn-outline" onclick="showLessNominations()">
+                            Show Less
+                        </button>
+                    `;
+                } else {
+                    viewAllBtn.style.display = 'none';
+                }
+
+                // Show nomination count
+                nominationList.innerHTML += `
+                    <div class="nomination-count">
+                        ${allNominations.length} project evaluation${allNominations.length !== 1 ? 's' : ''} total
+                    </div>
+                `;
+            }
+        }
+
+        // Show all nominations on dashboard
+        function showAllNominations() {
+            showAllOnDashboard = true;
+            updateDashboardNominations();
+        }
+
+        // Show less nominations on dashboard
+        function showLessNominations() {
+            showAllOnDashboard = false;
+            updateDashboardNominations();
+        }
+
+        // Show all nominations in separate screen
+        function showAllNominationsScreen() {
+            const allNominationsList = document.getElementById('allNominationsList');
+            
+            if (allNominations.length === 0) {
+                allNominationsList.innerHTML = `
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        <div style="font-weight: 600;">No project evaluations yet</div>
+                        <div style="color: #7f8c8d; font-size: 12px; margin-top: 5px;">Start evaluating projects to see them here</div>
+                    </div>
+                `;
+            } else {
+                allNominationsList.innerHTML = allNominations.map(nomination => `
+                    <div class="category-section">
+                        <div class="category-header">
+                            <span>${categoryIcons[nomination.category]} ${categories[nomination.category]}</span>
+                            <span class="status-badge status-completed">
+                                COMPLETED
+                            </span>
+                        </div>
+                        <div style="background: white; padding: 15px; border-radius: 8px;">
+                            <div style="margin-bottom: 10px;">
+                                <strong>Project:</strong> ${nomination.project.name}<br>
+                                <strong>Team:</strong> ${nomination.project.team}<br>
+                                <strong>Campus:</strong> ${nomination.project.campus}<br>
+                                <strong>Project ID:</strong> ${nomination.project.id}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            showScreen('screen-all-nominations');
+        }
+
+        // Filter and display projects for each category
+        function populateCategoryProjects() {
+            Object.keys(categories).forEach(category => {
+                const container = document.getElementById(`${category}-projects`);
+                const searchTerm = document.getElementById(`search-${category}`).value.toLowerCase();
+                
+                // All projects are eligible for all categories (judges can nominate any project for any category)
+                const filteredProjects = projects.filter(project => 
+                    project.name.toLowerCase().includes(searchTerm) || 
+                    project.team.toLowerCase().includes(searchTerm) ||
+                    project.description.toLowerCase().includes(searchTerm) ||
+                    project.category.toLowerCase().includes(searchTerm) ||
+                    project.campus.toLowerCase().includes(searchTerm)
+                );
+                
+                container.innerHTML = '';
+                
+                // Group projects by campus
+                const projectsByCampus = {};
+                filteredProjects.forEach(project => {
+                    if (!projectsByCampus[project.campus]) {
+                        projectsByCampus[project.campus] = [];
+                    }
+                    projectsByCampus[project.campus].push(project);
+                });
+                
+                // Create campus sections
+                Object.keys(projectsByCampus).forEach(campus => {
+                    const campusSection = document.createElement('div');
+                    campusSection.className = 'campus-section';
+                    campusSection.innerHTML = `
+                        <div class="campus-header">
+                            <span class="campus-icon">${campusIcons[campus]}</span>
+                            <span>${campus} Campus</span>
+                        </div>
+                        <div class="projects-grid" id="${category}-${campus}-projects">
+                            <!-- Projects for this campus will be populated here -->
+                        </div>
+                    `;
+                    container.appendChild(campusSection);
+                    
+                    const campusProjectsContainer = document.getElementById(`${category}-${campus}-projects`);
+                    
+                    projectsByCampus[campus].forEach(project => {
+                        const card = document.createElement('div');
+                        
+                        // Check if this category already has a nomination
+                        const hasNomination = allNominations.some(nom => nom.category === category);
+                        const isNominated = allNominations.some(nom => 
+                            nom.project.id === project.id && nom.category === category
+                        );
+                        
+                        card.className = `project-card ${hasNomination && !isNominated ? 'disabled' : ''}`;
+                        card.innerHTML = `
+                            <div class="project-name">${project.name}</div>
+                            <div class="project-team">👥 ${project.team}</div>
+                            <div class="project-team">📁 ${project.category} • 🎓 ${project.year} • 🏫 ${project.campus}</div>
+                            <div class="project-description">${project.description}</div>
+                            ${isNominated ? '<div style="color: #27ae60; font-size: 11px; margin-top: 5px;">✓ Evaluated</div>' : ''}
+                        `;
+                        
+                        if ((!hasNomination || isNominated) && !submissionsClosed) {
+                            card.onclick = () => addNomination(category, project);
+                        }
+                        
+                        campusProjectsContainer.appendChild(card);
+                    });
+                });
+
+                // Update project count
+                const nominatedCount = allNominations.filter(nom => nom.category === category).length;
+                document.getElementById(`${category}-count`).textContent = 
+                    `${filteredProjects.length} projects available • ${nominatedCount}/1 evaluated`;
+            });
+
+            updateProgressInfo();
+            updateCategoryStatus();
+            updateIncompleteWarning();
+            updateDashboardNominations();
+        }
+
+        // Search filter function
+        function filterProjects(category) {
+            const container = document.getElementById(`${category}-projects`);
+            const searchTerm = document.getElementById(`search-${category}`).value.toLowerCase();
+            
+            container.innerHTML = '';
+            
+            const filteredProjects = projects.filter(project => 
+                project.name.toLowerCase().includes(searchTerm) || 
+                project.team.toLowerCase().includes(searchTerm) ||
+                project.description.toLowerCase().includes(searchTerm) ||
+                project.category.toLowerCase().includes(searchTerm) ||
+                project.campus.toLowerCase().includes(searchTerm)
+            );
+            
+            // Group projects by campus
+            const projectsByCampus = {};
+            filteredProjects.forEach(project => {
+                if (!projectsByCampus[project.campus]) {
+                    projectsByCampus[project.campus] = [];
+                }
+                projectsByCampus[project.campus].push(project);
+            });
+            
+            // Create campus sections
+            Object.keys(projectsByCampus).forEach(campus => {
+                const campusSection = document.createElement('div');
+                campusSection.className = 'campus-section';
+                campusSection.innerHTML = `
+                    <div class="campus-header">
+                        <span class="campus-icon">${campusIcons[campus]}</span>
+                        <span>${campus} Campus</span>
+                    </div>
+                    <div class="projects-grid" id="${category}-${campus}-projects">
+                        <!-- Projects for this campus will be populated here -->
+                    </div>
+                `;
+                container.appendChild(campusSection);
+                
+                const campusProjectsContainer = document.getElementById(`${category}-${campus}-projects`);
+                
+                projectsByCampus[campus].forEach(project => {
+                    const card = document.createElement('div');
+                    
+                    // Check if this category already has a nomination
+                    const hasNomination = allNominations.some(nom => nom.category === category);
+                    const isNominated = allNominations.some(nom => 
+                        nom.project.id === project.id && nom.category === category
+                    );
+                    
+                    card.className = `project-card ${hasNomination && !isNominated ? 'disabled' : ''}`;
+                    card.innerHTML = `
+                        <div class="project-name">${project.name}</div>
+                        <div class="project-team">👥 ${project.team}</div>
+                        <div class="project-team">📁 ${project.category} • 🎓 ${project.year} • 🏫 ${project.campus}</div>
+                        <div class="project-description">${project.description}</div>
+                        ${isNominated ? '<div style="color: #27ae60; font-size: 11px; margin-top: 5px;">✓ Evaluated</div>' : ''}
+                    `;
+                    
+                    if ((!hasNomination || isNominated) && !submissionsClosed) {
+                        card.onclick = () => addNomination(category, project);
+                    }
+                    
+                    campusProjectsContainer.appendChild(card);
+                });
+            });
+        }
+
+        // Add a nomination to the list
+        function addNomination(category, project) {
+            if (submissionsClosed) return;
+            
+            // Check if this category already has a nomination
+            const existingCategoryNomination = allNominations.find(nom => nom.category === category);
+            
+            if (existingCategoryNomination) {
+                // Replace the existing nomination
+                allNominations = allNominations.filter(nom => nom.category !== category);
+            }
+
+            const nomination = {
+                id: Date.now(), // Unique ID
+                category: category,
+                project: project
+            };
+
+            allNominations.push(nomination);
+            updateNominationDisplay();
+            populateCategoryProjects(); // Refresh project lists to show disabled state
+        }
+
+        // Remove a nomination
+        function removeNomination(nominationId) {
+            if (submissionsClosed) return;
+            
+            allNominations = allNominations.filter(nom => nom.id !== nominationId);
+            updateNominationDisplay();
+            populateCategoryProjects(); // Refresh project lists to re-enable cards
+        }
+
+        // Update the nomination forms display
+        function updateNominationDisplay() {
+            Object.keys(categories).forEach(category => {
+                const container = document.getElementById(`${category}-nominations`);
+                container.innerHTML = '';
+                
+                const categoryNominations = allNominations.filter(nom => nom.category === category);
+                
+                if (categoryNominations.length > 0) {
+                    categoryNominations.forEach(nomination => {
+                        const nominationElement = document.createElement('div');
+                        nominationElement.className = 'nomination-item';
+                        nominationElement.innerHTML = `
+                            <div class="nomination-header">
+                                <strong>${nomination.project.name}</strong>
+                                ${!submissionsClosed ? `<button class="remove-btn" onclick="removeNomination(${nomination.id})">Remove</button>` : ''}
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <small style="color: #7f8c8d;">Team: ${nomination.project.team} | Category: ${nomination.project.category} | Campus: ${nomination.project.campus}</small>
+                            </div>
+                            <div style="color: #27ae60; font-weight: 600; margin-top: 10px;">
+                                ✓ Project nominated for ${categories[category]}
+                            </div>
+                        `;
+                        container.appendChild(nominationElement);
+                    });
+                }
+            });
+        }
+
+        // Show confirmation modal
+        function confirmSubmission() {
+            // Check if all categories are completed
+            const incompleteCategories = Object.keys(categories).filter(category => {
+                const nomination = allNominations.find(nom => nom.category === category);
+                return !nomination;
+            });
+
+            if (incompleteCategories.length > 0) {
+                alert(`Please complete all categories before submitting. Incomplete: ${incompleteCategories.map(cat => categories[cat]).join(', ')}`);
+                return;
+            }
+
+            document.getElementById('confirmationModal').style.display = 'flex';
+        }
+
+        // Close confirmation modal
+        function closeConfirmation() {
+            document.getElementById('confirmationModal').style.display = 'none';
+        }
+
+        // Submit all nominations
+        function submitAllNominations() {
+            closeConfirmation();
+            
+            // Close submissions
+            submissionsClosed = true;
+            
+            // Disable nomination button on dashboard
+            const nominationBtn = document.getElementById('nominationBtn');
+            nominationBtn.disabled = true;
+            nominationBtn.innerHTML = '✅ EVALUATIONS COMPLETED';
+            nominationBtn.classList.remove('btn');
+            nominationBtn.classList.add('btn-secondary');
+            
+            // Show completed badge
+            document.getElementById('completedBadge').style.display = 'inline-block';
+
+            // Update dashboard to show completed nominations
+            updateDashboardNominations();
+
+            // Show submission summary
+            const summary = document.getElementById('submission-summary');
+            summary.innerHTML = '<h4>Your submitted project evaluations:</h4>';
+            
+            allNominations.forEach(nomination => {
+                summary.innerHTML += `
+                    <div style="margin: 10px 0; padding: 10px; background: white; border-radius: 5px;">
+                        <strong>${categories[nomination.category]}</strong><br>
+                        <em>Project: ${nomination.project.name}</em><br>
+                        <small>Team: ${nomination.project.team} | Campus: ${nomination.project.campus}</small>
+                    </div>
+                `;
+            });
+
+            summary.innerHTML += `<div style="margin-top: 15px; padding: 10px; background: #27ae60; color: white; border-radius: 5px;">
+                <strong>Total Project Evaluations Submitted: ${allNominations.length}</strong><br>
+                <small>You cannot make any more evaluations.</small>
+            </div>`;
+
+            showScreen('screen-confirmation');
+        }
+
+        
+        // Judge login function
+function login() {
+    const email = document.getElementById('judgeEmail').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+    }
+
+    fetch('judge_login.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert(`Welcome, ${data.name}!`);
+            if (typeof showScreen === 'function') showScreen('screen-dashboard');
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Server error. Please ensure Apache and MySQL are running.');
+    });
+}
+
+
+
+
+
+        function showScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Show target screen
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pre-fill with test data for demo
+            document.getElementById('judgeEmail').value = 'judge.smith@tut.ac.za';
+            document.getElementById('password').value = 'password';
+        });
+    </script>
+</body>
+</html>

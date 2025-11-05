@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICEP AWARDS 2025 - Admin Portal</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>ICEP AWARDS 2025</h2>
+                <p>Admin Portal</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active" onclick="showScreen('screen-dashboard')"><i>📊</i> Dashboard</a></li>
+                <li><a href="#" onclick="showScreen('screen-nominations')"><i>📋</i> All Nominations</a></li>
+                <li><a href="#" onclick="showScreen('screen-analytics')"><i>📈</i> Analytics</a></li>
+                <li><a href="#" onclick="showScreen('screen-results')"><i>🏆</i> Results</a></li>
+                <li><a href="#" onclick="showScreen('screen-management')"><i>👥</i> Student & Judge Mgmt</a></li>
+                <li><a href="#" onclick="showScreen('screen-export')"><i>📤</i> Export Data</a></li>
+                <li><a href="#" onclick="showScreen('screen-settings')"><i>⚙️</i> System Settings</a></li>
+                <li><a href="#" onclick="logout()"><i>🚪</i> Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Screen 1: Dashboard -->
+            <div class="screen active" id="screen-dashboard">
+                <div class="header">
+                    <h1>Welcome, <span id="userName">ADMIN</span></h1>
+                    <p>ICEP Awards 2025 - Admin Dashboard</p>
+                </div>
+                <div style="padding: 30px;">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalNominations">0</div>
+                            <div class="stat-label">Total Nominations</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="studentNominations">0</div>
+                            <div class="stat-label">Student Nominations</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="supervisorNominations">0</div>
+                            <div class="stat-label">Project Nominations</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="completedNominations">0</div>
+                            <div class="stat-label">Registered Students</div>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>🏆 Top Nominated Students</h3>
+                            <div id="topStudentsChart" class="bar-chart">
+                                <!-- Top students will be populated here -->
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3>📊 Top Nominated Projects</h3>
+                            <div id="topProjectsChart" class="bar-chart">
+                                <!-- Top projects will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h3 style="margin-bottom: 15px;">🚀 Quick Actions</h3>
+                        <div class="button-group">
+                            <button class="btn btn-block" onclick="showScreen('screen-nominations')">VIEW ALL NOMINATIONS</button>
+                            <button class="btn btn-block btn-warning" onclick="showScreen('screen-analytics')">VIEW ANALYTICS</button>
+                            <button class="btn btn-block btn-success" onclick="showScreen('screen-results')">VIEW RESULTS</button>
+                            <button class="btn btn-block" onclick="showScreen('screen-management')">MANAGE STUDENTS & JUDGES</button>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px; color: #7f8c8d; font-size: 12px;">
+                        <p>Nomination Period: Jan 15 - Feb 15, 2025</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 2: All Nominations -->
+            <div class="screen" id="screen-nominations">
+                <div class="header">
+                    <h1>All Nominations</h1>
+                    <p>Complete overview of all student and project nominations</p>
+                </div>
+                <div style="padding: 30px;">
+                    <div class="tabs">
+                        <div class="tab active" onclick="switchTab('student-tab')">Student Nominations</div>
+                        <div class="tab" onclick="switchTab('project-tab')">Project Nominations</div>
+                    </div>
+
+                    <div class="tab-content active" id="student-tab">
+                        <div class="filter-section">
+                            <div style="flex: 1;">
+                                <label>Filter by Category</label>
+                                <select id="categoryFilter" onchange="filterStudentNominations()">
+                                    <option value="all">All Categories</option>
+                                    <!-- Categories will be populated here -->
+                                </select>
+                            </div>
+                            <div style="flex: 2;">
+                                <label>Search Students</label>
+                                <input type="text" id="studentSearch" placeholder="Search by student name or number..." onkeyup="filterStudentNominations()">
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table id="studentNominationsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Student Number</th>
+                                        <th>Campus</th>
+                                        <th>Total Nominations</th>
+                                        <th>Category Breakdown</th>
+                                        <th>Last Nominated</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Student nominations will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="total-count" id="studentTotalCount">
+                            Total Students Nominated: 0
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="project-tab">
+                        <div class="filter-section">
+                            <div style="flex: 1;">
+                                <label>Filter by Category</label>
+                                <select id="projectCategoryFilter" onchange="filterProjectNominations()">
+                                    <option value="all">All Categories</option>
+                                    <!-- Project categories will be populated here -->
+                                </select>
+                            </div>
+                            <div style="flex: 2;">
+                                <label>Search Projects</label>
+                                <input type="text" id="projectSearch" placeholder="Search projects..." onkeyup="filterProjectNominations()">
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table id="projectNominationsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Project</th>
+                                        <th>Team</th>
+                                        <th>Campus</th>
+                                        <th>Total Nominations</th>
+                                        <th>Category Breakdown</th>
+                                        <th>Last Nominated</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Project nominations will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="total-count" id="projectTotalCount">
+                            Total Projects Nominated: 0
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 3: Analytics -->
+            <div class="screen" id="screen-analytics">
+                <div class="header">
+                    <h1>Nominations Analytics</h1>
+                    <p>Detailed breakdown of nominations by category</p>
+                </div>
+                <div style="padding: 30px;">
+                    <div class="analytics-grid">
+                        <div class="analytics-card">
+                            <h3>📊 Student Nominations Overview</h3>
+                            <div class="analytics-stats">
+                                <div class="analytics-stat">
+                                    <div class="analytics-value" id="totalStudentNoms">0</div>
+                                    <div class="analytics-label">Total Nominations</div>
+                                </div>
+                                <div class="analytics-stat">
+                                    <div class="analytics-value" id="uniqueStudents">0</div>
+                                    <div class="analytics-label">Unique Students</div>
+                                </div>
+                                <div class="analytics-stat">
+                                    <div class="analytics-value" id="avgStudentNoms">0</div>
+                                    <div class="analytics-label">Avg per Student</div>
+                                </div>
+                                <div class="analytics-stat">
+                                    <div class="analytics-value" id="topStudentCategory">-</div>
+                                    <div class="analytics-label">Top Category</div>
+                                </div>
+                            </div>
+                            <div class="chart-card">
+                                <h4>Student Nominations by Category</h4>
+                                <div id="studentCategoryChart" class="bar-chart">
+                                    <!-- Student category chart will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="analytics-card">
+                            <h3>📈 Project Nominations Overview</h3>
+                            <div class="analytics-stats">
+                                <div class="analytics-stat">
+                                    <div class="analytics-value" id="totalProjectNoms">0</div>
+                                    <div class="analytics-label">Total Nominations</div>
+                                </div>
+                                <div class="analytics-stat">
+                                    <div class="analytics-value" id="uniqueProjects">0</div>
+                                    <div class="analytics-label">Unique Projects</div>
+                                </div>
+                                <div class="analytics-stat">
+                                    <div class="analytics-value" id="avgProjectNoms">0</div>
+                                    <div class="analytics-label">Avg per Project</div>
+                                </div>
+                                <div class="analytics-stat">
+                                    <div class="analytics-value" id="topProjectCategory">-</div>
+                                    <div class="analytics-label">Top Category</div>
+                                </div>
+                            </div>
+                            <div class="chart-card">
+                                <h4>Project Nominations by Category</h4>
+                                <div id="projectCategoryChart" class="bar-chart">
+                                    <!-- Project category chart will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>🏫 Nominations by Campus</h3>
+                            <div id="campusChart" class="bar-chart">
+                                <!-- Campus distribution chart will be populated here -->
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3>📅 Nomination Activity Timeline</h3>
+                            <div class="chart-placeholder">
+                                Timeline chart showing nomination activity over time
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 4: Results -->
+            <div class="screen" id="screen-results">
+                <div class="header">
+                    <h1>ICEP AWARDS 2025 - FINAL RESULTS</h1>
+                    <p>Winners and Finalists</p>
+                </div>
+                <div style="padding: 30px;">
+                    <div class="progress-info">
+                        <strong>🎉 FINAL RESULTS CALCULATED</strong><br>
+                        <small>Based on total nomination counts across all categories</small>
+                    </div>
+
+                    <div class="tabs">
+                        <div class="tab active" onclick="switchTab('student-results-tab')">Student Awards</div>
+                        <div class="tab" onclick="switchTab('project-results-tab')">Project Awards</div>
+                    </div>
+
+                    <div class="tab-content active" id="student-results-tab">
+                        <div class="winner-card">
+                            <div class="winner-badge">🏆 STUDENT OF THE YEAR</div>
+                            <div class="winner-name" id="overallStudentWinner">-</div>
+                            <div class="winner-details" id="overallStudentDetails">-</div>
+                            <div class="winner-nominations" id="overallStudentNominations">- nominations</div>
+                        </div>
+
+                        <div class="results-section">
+                            <h3>🏅 Top 5 Students</h3>
+                            <div id="topStudentsResults">
+                                <!-- Top students results will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="project-results-tab">
+                        <div class="winner-card">
+                            <div class="winner-badge">🏆 PROJECT OF THE YEAR</div>
+                            <div class="winner-name" id="overallProjectWinner">-</div>
+                            <div class="winner-details" id="overallProjectDetails">-</div>
+                            <div class="winner-nominations" id="overallProjectNominations">- nominations</div>
+                        </div>
+
+                        <div class="results-section">
+                            <h3>🏅 Top 5 Projects</h3>
+                            <div id="topProjectsResults">
+                                <!-- Top projects results will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 5: Student & Judge Management -->
+            <div class="screen" id="screen-management">
+                <div class="header">
+                    <h1>Student & Judge Management</h1>
+                    <p>Manage students and judges across all campuses</p>
+                </div>
+                <div style="padding: 30px;">
+                    <div class="tabs">
+                        <div class="tab active" onclick="switchTab('student-management-tab')">Student Management</div>
+                        <div class="tab" onclick="switchTab('judge-management-tab')">Judge Management</div>
+                    </div>
+
+                    <div class="tab-content active" id="student-management-tab">
+                        <div class="management-section">
+                            <h3>➕ Add New Students</h3>
+                            <div class="import-export-options">
+                                <div class="import-export-card">
+                                    <h4>📝 Manual Entry</h4>
+                                    <p>Add students one by one</p>
+                                    <button class="btn btn-block" onclick="showAddStudentForm()">ADD STUDENT MANUALLY</button>
+                                </div>
+                                <div class="import-export-card">
+                                    <h4>📊 Excel Import</h4>
+                                    <p>Bulk import students from Excel</p>
+                                    <div class="file-upload" onclick="document.getElementById('studentFileInput').click()">
+                                        <i>📁</i>
+                                        <p>Click to upload Excel file</p>
+                                        <small>Supports .xlsx, .xls, .csv</small>
+                                    </div>
+                                    <input type="file" id="studentFileInput" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleStudentFileImport(this.files)">
+                                    <button class="btn btn-outline btn-block" onclick="downloadStudentTemplate()">DOWNLOAD TEMPLATE</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="management-section">
+                            <h3>👥 Current Students</h3>
+                            <div class="filter-section">
+                                <div style="flex: 1;">
+                                    <label>Filter by Campus</label>
+                                    <select id="campusFilter" onchange="filterStudents()">
+                                        <option value="all">All Campuses</option>
+                                        <option value="main">Main Campus</option>
+                                        <option value="arcadia">Arcadia Campus</option>
+                                        <option value="polokwane">Polokwane Campus</option>
+                                        <option value="nelspruit">Nelspruit Campus</option>
+                                        <option value="soshanguve">Soshanguve Campus</option>
+                                        <option value="emalahleni">Emalahleni Campus</option>
+                                    </select>
+                                </div>
+                                <div style="flex: 2;">
+                                    <label>Search Students</label>
+                                    <input type="text" id="studentManagementSearch" placeholder="Search students..." onkeyup="filterStudents()">
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table id="studentManagementTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Student Number</th>
+                                            <th>Full Name</th>
+                                            <th>Email</th>
+                                            <th>Campus</th>
+                                            <th>Programme</th>
+                                            <th>Categories</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Students will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="total-count" id="studentManagementTotal">
+                                Total Students: 0
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="judge-management-tab">
+                        <div class="management-section">
+                            <h3>➕ Add New Judges</h3>
+                            <div class="import-export-options">
+                                <div class="import-export-card">
+                                    <h4>📝 Manual Entry</h4>
+                                    <p>Add judges one by one</p>
+                                    <button class="btn btn-block" onclick="showAddJudgeForm()">ADD JUDGE MANUALLY</button>
+                                </div>
+                                <div class="import-export-card">
+                                    <h4>📊 Excel Import</h4>
+                                    <p>Bulk import judges from Excel</p>
+                                    <div class="file-upload" onclick="document.getElementById('judgeFileInput').click()">
+                                        <i>📁</i>
+                                        <p>Click to upload Excel file</p>
+                                        <small>Supports .xlsx, .xls, .csv</small>
+                                    </div>
+                                    <input type="file" id="judgeFileInput" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleJudgeFileImport(this.files)">
+                                    <button class="btn btn-outline btn-block" onclick="downloadJudgeTemplate()">DOWNLOAD TEMPLATE</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="management-section">
+                            <h3>⚖️ Current Judges</h3>
+                            <div class="filter-section">
+                                <div style="flex: 2;">
+                                    <label>Search Judges</label>
+                                    <input type="text" id="judgeSearch" placeholder="Search judges..." onkeyup="filterJudges()">
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table id="judgeManagementTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Judge ID</th>
+                                            <th>Full Name</th>
+                                            <th>Email</th>
+                                            <th>Department</th>
+                                            <th>Assigned Categories</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Judges will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="total-count" id="judgeManagementTotal">
+                                Total Judges: 0
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 6: Export -->
+            <div class="screen" id="screen-export">
+                <div class="header">
+                    <h1>Export Data</h1>
+                    <p>Export nomination data in various formats</p>
+                </div>
+                <div style="padding: 30px;">
+                    <div class="export-options">
+                        <h3 style="margin-bottom: 20px;">📤 Export Options</h3>
+                        
+                        <div class="export-option">
+                            <div>
+                                <strong>All Nominations Data</strong><br>
+                                <small>Complete dataset in Excel format</small>
+                            </div>
+                            <button class="btn btn-outline" onclick="exportAllData()">EXPORT EXCEL</button>
+                        </div>
+                        
+                        <div class="export-option">
+                            <div>
+                                <strong>Student Nominations</strong><br>
+                                <small>Student nomination data only</small>
+                            </div>
+                            <button class="btn btn-outline" onclick="exportStudentData()">EXPORT EXCEL</button>
+                        </div>
+                        
+                        <div class="export-option">
+                            <div>
+                                <strong>Project Nominations</strong><br>
+                                <small>Project nomination data only</small>
+                            </div>
+                            <button class="btn btn-outline" onclick="exportProjectData()">EXPORT EXCEL</button>
+                        </div>
+                        
+                        <div class="export-option">
+                            <div>
+                                <strong>Student Database</strong><br>
+                                <small>All registered students</small>
+                            </div>
+                            <button class="btn btn-outline" onclick="exportStudentDatabase()">EXPORT EXCEL</button>
+                        </div>
+                        
+                        <div class="export-option">
+                            <div>
+                                <strong>Judge Database</strong><br>
+                                <small>All registered judges</small>
+                            </div>
+                            <button class="btn btn-outline" onclick="exportJudgeDatabase()">EXPORT EXCEL</button>
+                        </div>
+                        
+                        <div class="export-option">
+                            <div>
+                                <strong>Final Results</strong><br>
+                                <small>Winners and finalists data</small>
+                            </div>
+                            <button class="btn btn-outline" onclick="exportResultsData()">EXPORT EXCEL</button>
+                        </div>
+                        
+                        <div class="export-option">
+                            <div>
+                                <strong>Complete Report (PDF)</strong><br>
+                                <small>Formatted report with charts</small>
+                            </div>
+                            <button class="btn btn-success" onclick="generateCompleteReport()">GENERATE PDF</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 7: System Settings -->
+            <div class="screen" id="screen-settings">
+                <div class="header">
+                    <h1>System Settings</h1>
+                    <p>Manage nomination system configuration</p>
+                </div>
+                <div style="padding: 30px;">
+                    <div class="card">
+                        <div class="card-header">
+                            Nomination Period
+                            <span class="status-badge" id="nominationStatus">ACTIVE</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <input type="date" id="startDate" value="2025-01-15">
+                            </div>
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <input type="date" id="endDate" value="2025-02-15">
+                            </div>
+                            <button class="btn" onclick="updateNominationPeriod()">UPDATE PERIOD</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">System Controls</div>
+                        <div class="card-content">
+                            <div class="button-group">
+                                <button class="btn btn-success" id="openNominationsBtn" onclick="toggleNominations(true)">OPEN NOMINATIONS</button>
+                                <button class="btn btn-danger" id="closeNominationsBtn" onclick="toggleNominations(false)">CLOSE NOMINATIONS</button>
+                            </div>
+                            <div class="button-group">
+                                <button class="btn btn-warning" onclick="resetNominations()">RESET ALL NOMINATIONS</button>
+                                <button class="btn btn-outline" onclick="backupSystem()">BACKUP SYSTEM</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">User Management</div>
+                        <div class="card-content">
+                            <div class="form-group">
+                                <label>Add New Admin</label>
+                                <input type="email" id="newAdminEmail" placeholder="Enter email address">
+                            </div>
+                            <button class="btn" onclick="addAdmin()">ADD ADMIN</button>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="showScreen('screen-dashboard')">← BACK TO DASHBOARD</button>
+                        <button class="btn" onclick="saveSettings()">SAVE ALL SETTINGS</button>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div class="confirmation-modal" id="addStudentModal" style="display: none;">
+        <div class="modal-content" style="max-width: 600px;">
+            <h3 style="margin-bottom: 20px;">➕ Add New Student</h3>
+            <div style="text-align: left;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Student Number *</label>
+                        <input type="text" id="newStudentNumber" placeholder="e.g., S12345678">
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="newStudentName" placeholder="e.g., John Doe">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="newStudentEmail" placeholder="e.g., s12345678@tut4life.ac.za">
+                    </div>
+                    <div class="form-group">
+                        <label>Campus *</label>
+                        <select id="newStudentCampus">
+                            <option value="main">Main Campus</option>
+                            <option value="arcadia">Arcadia Campus</option>
+                            <option value="polokwane">Polokwane Campus</option>
+                            <option value="nelspruit">Nelspruit Campus</option>
+                            <option value="soshanguve">Soshanguve Campus</option>
+                            <option value="emalahleni">Emalahleni Campus</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Programme *</label>
+                    <input type="text" id="newStudentProgramme" placeholder="e.g., Computer Science">
+                </div>
+                <div class="form-group">
+                    <label>Eligible Categories *</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div><input type="checkbox" id="cat_innovation" checked> <label for="cat_innovation">Most Innovative</label></div>
+                        <div><input type="checkbox" id="cat_community"> <label for="cat_community">Community Impact</label></div>
+                        <div><input type="checkbox" id="cat_academic"> <label for="cat_academic">Academic Performer</label></div>
+                        <div><input type="checkbox" id="cat_supportive"> <label for="cat_supportive">Supportive Peer</label></div>
+                        <div><input type="checkbox" id="cat_teamplayer"> <label for="cat_teamplayer">Team Player</label></div>
+                        <div><input type="checkbox" id="cat_improved"> <label for="cat_improved">Most Improved</label></div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="closeAddStudentModal()">CANCEL</button>
+                <button class="btn btn-success" onclick="addNewStudent()">ADD STUDENT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Judge Modal -->
+    <div class="confirmation-modal" id="addJudgeModal" style="display: none;">
+        <div class="modal-content" style="max-width: 600px;">
+            <h3 style="margin-bottom: 20px;">⚖️ Add New Judge</h3>
+            <div style="text-align: left;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="newJudgeName" placeholder="e.g., Dr. Sarah Johnson">
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="newJudgeEmail" placeholder="e.g., sarah.johnson@tut.ac.za">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Department *</label>
+                        <input type="text" id="newJudgeDepartment" placeholder="e.g., Computer Science">
+                    </div>
+                    <div class="form-group">
+                        <label>Staff ID</label>
+                        <input type="text" id="newJudgeId" placeholder="e.g., EMP12345">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Assigned Categories *</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div><input type="checkbox" id="jcat_innovation" checked> <label for="jcat_innovation">Most Innovative</label></div>
+                        <div><input type="checkbox" id="jcat_community"> <label for="jcat_community">Community Impact</label></div>
+                        <div><input type="checkbox" id="jcat_academic"> <label for="jcat_academic">Academic Performer</label></div>
+                        <div><input type="checkbox" id="jcat_supportive"> <label for="jcat_supportive">Supportive Peer</label></div>
+                        <div><input type="checkbox" id="jcat_teamplayer"> <label for="jcat_teamplayer">Team Player</label></div>
+                        <div><input type="checkbox" id="jcat_improved"> <label for="jcat_improved">Most Improved</label></div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="closeAddJudgeModal()">CANCEL</button>
+                <button class="btn btn-success" onclick="addNewJudge()">ADD JUDGE</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Student categories
+        const studentCategories = {
+            'innovation': 'Most Innovative Student',
+            'community': 'Best Community Impact Student', 
+            'academic': 'Best Academic Performer',
+            'supportive': 'Most Supportive Peer',
+            'teamplayer': 'Best Team Player',
+            'improved': 'Most Improved Student'
+        };
+
+        // Project categories
+        const projectCategories = {
+            'innovation': 'Most Innovative Project',
+            'impact': 'Best Community Impact Project', 
+            'technical': 'Best Technical Implementation',
+            'design': 'Best UI/UX Design',
+            'collaboration': 'Best Collaborative Project'
+        };
+
+        // Campus data - FIXED: Added Soshanguve and Emalahleni campuses
+        const campuses = {
+            'main': 'Main Campus',
+            'arcadia': 'Arcadia Campus', 
+            'polokwane': 'Polokwane Campus',
+            'nelspruit': 'Nelspruit Campus',
+            'soshanguve': 'Soshanguve Campus',
+            'emalahleni': 'Emalahleni Campus'
+        };
+
+        // Sample data for students and judges
+        let registeredStudents = [
+            {
+                id: 'S12345678',
+                name: 'Nzuzo Khanyile',
+                email: 's12345678@tut4life.ac.za',
+                campus: 'main',
+                programme: 'Informatics',
+                categories: ['innovation', 'community'],
+                status: 'Active'
+            },
+            {
+                id: 'S23456789',
+                name: 'Yamkela Zele',
+                email: 's23456789@tut4life.ac.za',
+                campus: 'arcadia',
+                programme: 'Computer Science',
+                categories: ['innovation', 'academic'],
+                status: 'Active'
+            },
+            {
+                id: 'S34567890',
+                name: 'Phiwe Mzizi',
+                email: 's34567890@tut4life.ac.za',
+                campus: 'polokwane',
+                programme: 'Data Science',
+                categories: ['innovation', 'teamplayer'],
+                status: 'Active'
+            },
+            {
+                id: 'S45678901',
+                name: 'Lerato Moloi',
+                email: 's45678901@tut4life.ac.za',
+                campus: 'soshanguve',
+                programme: 'Software Engineering',
+                categories: ['innovation', 'teamplayer'],
+                status: 'Active'
+            },
+            {
+                id: 'S56789012',
+                name: 'Thabo Nkosi',
+                email: 's56789012@tut4life.ac.za',
+                campus: 'emalahleni',
+                programme: 'IT Management',
+                categories: ['academic', 'community'],
+                status: 'Active'
+            }
+        ];
+
+        let registeredJudges = [
+            {
+                id: 'J1001',
+                name: 'Dr. Sarah Johnson',
+                email: 'sarah.johnson@tut.ac.za',
+                department: 'Computer Science',
+                categories: ['innovation', 'technical'],
+                status: 'Active'
+            },
+            {
+                id: 'J1002',
+                name: 'Prof. Michael Brown',
+                email: 'michael.brown@tut.ac.za',
+                department: 'Information Technology',
+                categories: ['community', 'academic'],
+                status: 'Active'
+            },
+            {
+                id: 'J1003',
+                name: 'Dr. Linda van der Merwe',
+                email: 'linda.vandermerwe@tut.ac.za',
+                department: 'Electrical Engineering',
+                categories: ['technical', 'innovation'],
+                status: 'Active'
+            }
+        ];
+
+        let currentAdmin = null;
+
+        
+
+        // Logout function
+function logout() {
+    currentAdmin = null;
+    window.location.href = "index.html";
+}
+
+
+        // Show screen function
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Update sidebar active state
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Find and activate the corresponding sidebar link
+            const sidebarMap = {
+                'screen-dashboard': 0,
+                'screen-nominations': 1,
+                'screen-analytics': 2,
+                'screen-results': 3,
+                'screen-management': 4,
+                'screen-export': 5,
+                'screen-settings': 6
+            };
+            
+            if (sidebarMap[screenId] !== undefined) {
+                document.querySelectorAll('.sidebar-menu a')[sidebarMap[screenId]].classList.add('active');
+            }
+            
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // Switch tab function
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Activate the selected tab
+            document.getElementById(tabId).classList.add('active');
+            
+            // Find and activate the corresponding tab header
+            const tabHeaders = document.querySelectorAll('.tab');
+            for (let i = 0; i < tabHeaders.length; i++) {
+                if (tabHeaders[i].getAttribute('onclick') === `switchTab('${tabId}')`) {
+                    tabHeaders[i].classList.add('active');
+                    break;
+                }
+            }
+        }
+
+        // Populate management tables
+        function populateManagementTables() {
+            populateStudentManagementTable();
+            populateJudgeManagementTable();
+        }
+
+        // Populate student management table
+        function populateStudentManagementTable() {
+            const table = document.getElementById('studentManagementTable').getElementsByTagName('tbody')[0];
+            table.innerHTML = '';
+            
+            registeredStudents.forEach(student => {
+                const row = table.insertRow();
+                const categories = student.categories.map(cat => studentCategories[cat]).join(', ');
+                
+                row.innerHTML = `
+                    <td>${student.id}</td>
+                    <td>${student.name}</td>
+                    <td>${student.email}</td>
+                    <td><span class="campus-badge">${campuses[student.campus]}</span></td>
+                    <td>${student.programme}</td>
+                    <td>${categories}</td>
+                    <td><span class="status-badge status-completed">${student.status}</span></td>
+                    <td>
+                        <button class="btn btn-outline" onclick="editStudent('${student.id}')">Edit</button>
+                        <button class="btn btn-danger" onclick="deleteStudent('${student.id}')">Delete</button>
+                    </td>
+                `;
+            });
+            
+            document.getElementById('studentManagementTotal').textContent = `Total Students: ${registeredStudents.length}`;
+        }
+
+        // Populate judge management table
+        function populateJudgeManagementTable() {
+            const table = document.getElementById('judgeManagementTable').getElementsByTagName('tbody')[0];
+            table.innerHTML = '';
+            
+            registeredJudges.forEach(judge => {
+                const row = table.insertRow();
+                const categories = judge.categories.map(cat => studentCategories[cat] || projectCategories[cat]).join(', ');
+                
+                row.innerHTML = `
+                    <td>${judge.id}</td>
+                    <td>${judge.name}</td>
+                    <td>${judge.email}</td>
+                    <td>${judge.department}</td>
+                    <td>${categories}</td>
+                    <td><span class="status-badge status-completed">${judge.status}</span></td>
+                    <td>
+                        <button class="btn btn-outline" onclick="editJudge('${judge.id}')">Edit</button>
+                        <button class="btn btn-danger" onclick="deleteJudge('${judge.id}')">Delete</button>
+                    </td>
+                `;
+            });
+            
+            document.getElementById('judgeManagementTotal').textContent = `Total Judges: ${registeredJudges.length}`;
+        }
+
+        // Show add student form
+        function showAddStudentForm() {
+            document.getElementById('addStudentModal').style.display = 'flex';
+        }
+
+        // Close add student modal
+        function closeAddStudentModal() {
+            document.getElementById('addStudentModal').style.display = 'none';
+        }
+
+        // Add new student
+        function addNewStudent() {
+            const studentNumber = document.getElementById('newStudentNumber').value;
+            const name = document.getElementById('newStudentName').value;
+            const email = document.getElementById('newStudentEmail').value;
+            const campus = document.getElementById('newStudentCampus').value;
+            const programme = document.getElementById('newStudentProgramme').value;
+            
+            // Get selected categories
+            const categories = [];
+            if (document.getElementById('cat_innovation').checked) categories.push('innovation');
+            if (document.getElementById('cat_community').checked) categories.push('community');
+            if (document.getElementById('cat_academic').checked) categories.push('academic');
+            if (document.getElementById('cat_supportive').checked) categories.push('supportive');
+            if (document.getElementById('cat_teamplayer').checked) categories.push('teamplayer');
+            if (document.getElementById('cat_improved').checked) categories.push('improved');
+            
+            if (!studentNumber || !name || !email || !programme || categories.length === 0) {
+                alert('Please fill all required fields and select at least one category');
+                return;
+            }
+            
+            // Check if student already exists
+            if (registeredStudents.find(s => s.id === studentNumber)) {
+                alert('Student with this ID already exists');
+                return;
+            }
+            
+            // Add new student
+            registeredStudents.push({
+                id: studentNumber,
+                name: name,
+                email: email,
+                campus: campus,
+                programme: programme,
+                categories: categories,
+                status: 'Active'
+            });
+            
+            // Update table
+            populateStudentManagementTable();
+            
+            // Close modal and reset form
+            closeAddStudentModal();
+            document.getElementById('newStudentNumber').value = '';
+            document.getElementById('newStudentName').value = '';
+            document.getElementById('newStudentEmail').value = '';
+            document.getElementById('newStudentProgramme').value = '';
+            
+            alert('Student added successfully!');
+        }
+
+        // Show add judge form
+        function showAddJudgeForm() {
+            document.getElementById('addJudgeModal').style.display = 'flex';
+        }
+
+        // Close add judge modal
+        function closeAddJudgeModal() {
+            document.getElementById('addJudgeModal').style.display = 'none';
+        }
+
+        // Add new judge
+        function addNewJudge() {
+            const name = document.getElementById('newJudgeName').value;
+            const email = document.getElementById('newJudgeEmail').value;
+            const department = document.getElementById('newJudgeDepartment').value;
+            const judgeId = document.getElementById('newJudgeId').value || 'J' + (1000 + registeredJudges.length + 1);
+            
+            // Get selected categories
+            const categories = [];
+            if (document.getElementById('jcat_innovation').checked) categories.push('innovation');
+            if (document.getElementById('jcat_community').checked) categories.push('community');
+            if (document.getElementById('jcat_academic').checked) categories.push('academic');
+            if (document.getElementById('jcat_supportive').checked) categories.push('supportive');
+            if (document.getElementById('jcat_teamplayer').checked) categories.push('teamplayer');
+            if (document.getElementById('jcat_improved').checked) categories.push('improved');
+            
+            if (!name || !email || !department || categories.length === 0) {
+                alert('Please fill all required fields and select at least one category');
+                return;
+            }
+            
+            // Add new judge
+            registeredJudges.push({
+                id: judgeId,
+                name: name,
+                email: email,
+                department: department,
+                categories: categories,
+                status: 'Active'
+            });
+            
+            // Update table
+            populateJudgeManagementTable();
+            
+            // Close modal and reset form
+            closeAddJudgeModal();
+            document.getElementById('newJudgeName').value = '';
+            document.getElementById('newJudgeEmail').value = '';
+            document.getElementById('newJudgeDepartment').value = '';
+            document.getElementById('newJudgeId').value = '';
+            
+            alert('Judge added successfully!');
+        }
+
+        // Handle student file import
+        function handleStudentFileImport(files) {
+            if (files.length === 0) return;
+            
+            // In a real application, this would parse the Excel file
+            // For demo purposes, we'll simulate adding some students
+            alert('File uploaded successfully! Students will be imported after validation.');
+            
+            // Simulate adding imported students
+            const newStudents = [
+                {
+                    id: 'S98765432',
+                    name: 'Lerato Moloi',
+                    email: 's98765432@tut4life.ac.za',
+                    campus: 'nelspruit',
+                    programme: 'Software Engineering',
+                    categories: ['innovation', 'teamplayer'],
+                    status: 'Active'
+                },
+                {
+                    id: 'S87654321',
+                    name: 'Thabo Nkosi',
+                    email: 's87654321@tut4life.ac.za',
+                    campus: 'arcadia',
+                    programme: 'IT Management',
+                    categories: ['academic', 'community'],
+                    status: 'Active'
+                }
+            ];
+            
+            newStudents.forEach(student => {
+                if (!registeredStudents.find(s => s.id === student.id)) {
+                    registeredStudents.push(student);
+                }
+            });
+            
+            populateStudentManagementTable();
+        }
+
+        // Handle judge file import
+        function handleJudgeFileImport(files) {
+            if (files.length === 0) return;
+            
+            // In a real application, this would parse the Excel file
+            alert('File uploaded successfully! Judges will be imported after validation.');
+            
+            // Simulate adding imported judges
+            const newJudges = [
+                {
+                    id: 'J1004',
+                    name: 'Prof. David Wilson',
+                    email: 'david.wilson@tut.ac.za',
+                    department: 'Mechanical Engineering',
+                    categories: ['technical', 'innovation'],
+                    status: 'Active'
+                }
+            ];
+            
+            newJudges.forEach(judge => {
+                if (!registeredJudges.find(j => j.id === judge.id)) {
+                    registeredJudges.push(judge);
+                }
+            });
+            
+            populateJudgeManagementTable();
+        }
+
+        // Download student template
+        function downloadStudentTemplate() {
+            alert('Downloading student import template...');
+            // In a real application, this would download an Excel template
+        }
+
+        // Download judge template
+        function downloadJudgeTemplate() {
+            alert('Downloading judge import template...');
+            // In a real application, this would download an Excel template
+        }
+
+        // Filter students
+        function filterStudents() {
+            const campusFilter = document.getElementById('campusFilter').value;
+            const searchTerm = document.getElementById('studentManagementSearch').value.toLowerCase();
+            const rows = document.getElementById('studentManagementTable').getElementsByTagName('tbody')[0].rows;
+            
+            let visibleCount = 0;
+            
+            for (let i = 0; i < rows.length; i++) {
+                const student = registeredStudents[i];
+                const name = student.name.toLowerCase();
+                const studentNumber = student.id.toLowerCase();
+                const matchesCampus = campusFilter === 'all' || student.campus === campusFilter;
+                const matchesSearch = name.includes(searchTerm) || studentNumber.includes(searchTerm);
+                
+                if (matchesCampus && matchesSearch) {
+                    rows[i].style.display = '';
+                    visibleCount++;
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+            
+            document.getElementById('studentManagementTotal').textContent = `Total Students: ${visibleCount}`;
+        }
+
+        // Filter judges
+        function filterJudges() {
+            const searchTerm = document.getElementById('judgeSearch').value.toLowerCase();
+            const rows = document.getElementById('judgeManagementTable').getElementsByTagName('tbody')[0].rows;
+            
+            let visibleCount = 0;
+            
+            for (let i = 0; i < rows.length; i++) {
+                const judge = registeredJudges[i];
+                const name = judge.name.toLowerCase();
+                const department = judge.department.toLowerCase();
+                const matchesSearch = name.includes(searchTerm) || department.includes(searchTerm);
+                
+                if (matchesSearch) {
+                    rows[i].style.display = '';
+                    visibleCount++;
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+            
+            document.getElementById('judgeManagementTotal').textContent = `Total Judges: ${visibleCount}`;
+        }
+
+        // Edit student (placeholder)
+        function editStudent(studentId) {
+            alert(`Edit student: ${studentId}`);
+            // In a real application, this would open an edit form
+        }
+
+        // Delete student
+        function deleteStudent(studentId) {
+            if (confirm(`Are you sure you want to delete student ${studentId}?`)) {
+                registeredStudents = registeredStudents.filter(s => s.id !== studentId);
+                populateStudentManagementTable();
+                alert('Student deleted successfully!');
+            }
+        }
+
+        // Edit judge (placeholder)
+        function editJudge(judgeId) {
+            alert(`Edit judge: ${judgeId}`);
+            // In a real application, this would open an edit form
+        }
+
+        // Delete judge
+        function deleteJudge(judgeId) {
+            if (confirm(`Are you sure you want to delete judge ${judgeId}?`)) {
+                registeredJudges = registeredJudges.filter(j => j.id !== judgeId);
+                populateJudgeManagementTable();
+                alert('Judge deleted successfully!');
+            }
+        }
+
+        // Export student database
+        function exportStudentDatabase() {
+            alert('Exporting student database to Excel...');
+            // In a real application, this would generate and download an Excel file
+        }
+
+        // Export judge database
+        function exportJudgeDatabase() {
+            alert('Exporting judge database to Excel...');
+            // In a real application, this would generate and download an Excel file
+        }
+
+        // Dashboard stats
+        function updateDashboardStats() {
+            document.getElementById('totalNominations').textContent = '125';
+            document.getElementById('studentNominations').textContent = '89';
+            document.getElementById('supervisorNominations').textContent = '36';
+            document.getElementById('completedNominations').textContent = registeredStudents.length;
+        }
+
+        // Populate category filters
+        function populateCategoryFilters() {
+            const studentCategoryFilter = document.getElementById('categoryFilter');
+            const projectCategoryFilter = document.getElementById('projectCategoryFilter');
+            
+            // Clear existing options
+            studentCategoryFilter.innerHTML = '<option value="all">All Categories</option>';
+            projectCategoryFilter.innerHTML = '<option value="all">All Categories</option>';
+            
+            // Add student categories
+            for (const [key, value] of Object.entries(studentCategories)) {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = value;
+                studentCategoryFilter.appendChild(option);
+            }
+            
+            // Add project categories
+            for (const [key, value] of Object.entries(projectCategories)) {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = value;
+                projectCategoryFilter.appendChild(option);
+            }
+        }
+
+        // Populate nominations tables
+        function populateNominationsTables() {
+            // This would populate the nominations tables with data
+            // For now, we'll just set some placeholder content
+            document.getElementById('studentTotalCount').textContent = `Total Students Nominated: ${registeredStudents.length}`;
+            document.getElementById('projectTotalCount').textContent = 'Total Projects Nominated: 15';
+        }
+
+        // Update top students chart
+        function updateTopStudentsChart() {
+            const chart = document.getElementById('topStudentsChart');
+            chart.innerHTML = '';
+            
+            // Sample data
+            const topStudents = [
+                { name: 'Nzuzo Khanyile', nominations: 12 },
+                { name: 'Yamkela Zele', nominations: 9 },
+                { name: 'Phiwe Mzizi', nominations: 7 },
+                { name: 'Lerato Moloi', nominations: 6 },
+                { name: 'Thabo Nkosi', nominations: 5 }
+            ];
+            
+            topStudents.forEach(student => {
+                const percentage = (student.nominations / 12) * 100;
+                const barItem = document.createElement('div');
+                barItem.className = 'bar-item';
+                barItem.innerHTML = `
+                    <div class="bar-label">${student.name}</div>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="width: ${percentage}%; background: #3498db;"></div>
+                    </div>
+                    <div class="bar-value">${student.nominations}</div>
+                `;
+                chart.appendChild(barItem);
+            });
+        }
+
+        // Update top projects chart
+        function updateTopProjectsChart() {
+            const chart = document.getElementById('topProjectsChart');
+            chart.innerHTML = '';
+            
+            // Sample data
+            const topProjects = [
+                { name: 'Smart Campus App', nominations: 8 },
+                { name: 'AI Tutor System', nominations: 7 },
+                { name: 'Green Energy Monitor', nominations: 6 },
+                { name: 'Community Health App', nominations: 5 },
+                { name: 'Virtual Lab Platform', nominations: 4 }
+            ];
+            
+            topProjects.forEach(project => {
+                const percentage = (project.nominations / 8) * 100;
+                const barItem = document.createElement('div');
+                barItem.className = 'bar-item';
+                barItem.innerHTML = `
+                    <div class="bar-label">${project.name}</div>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="width: ${percentage}%; background: #27ae60;"></div>
+                    </div>
+                    <div class="bar-value">${project.nominations}</div>
+                `;
+                chart.appendChild(barItem);
+            });
+        }
+
+        // Update results
+        function updateResults() {
+            // Set overall winners
+            document.getElementById('overallStudentWinner').textContent = 'Nzuzo Khanyile';
+            document.getElementById('overallStudentDetails').textContent = 'Main Campus | Informatics';
+            document.getElementById('overallStudentNominations').textContent = '12 nominations';
+            
+            document.getElementById('overallProjectWinner').textContent = 'Smart Campus App';
+            document.getElementById('overallProjectDetails').textContent = 'Team: Innovation Squad | Main Campus';
+            document.getElementById('overallProjectNominations').textContent = '8 nominations';
+            
+            // Populate top students results
+            const topStudentsResults = document.getElementById('topStudentsResults');
+            topStudentsResults.innerHTML = '';
+            
+            const topStudents = [
+                { name: 'Nzuzo Khanyile', campus: 'Main Campus', nominations: 12 },
+                { name: 'Yamkela Zele', campus: 'Arcadia Campus', nominations: 9 },
+                { name: 'Phiwe Mzizi', campus: 'Polokwane Campus', nominations: 7 },
+                { name: 'Lerato Moloi', campus: 'Soshanguve Campus', nominations: 6 },
+                { name: 'Thabo Nkosi', campus: 'Emalahleni Campus', nominations: 5 }
+            ];
+            
+            topStudents.forEach((student, index) => {
+                const finalistCard = document.createElement('div');
+                finalistCard.className = 'finalist-card';
+                finalistCard.innerHTML = `
+                    <div style="display: flex; align-items: center;">
+                        <div class="finalist-position">${index + 1}</div>
+                        <div class="finalist-details">
+                            <div class="finalist-name">${student.name}</div>
+                            <div style="font-size: 12px; color: #7f8c8d;">${student.campus}</div>
+                        </div>
+                    </div>
+                    <div class="finalist-count">${student.nominations} nominations</div>
+                `;
+                topStudentsResults.appendChild(finalistCard);
+            });
+            
+            // Populate top projects results
+            const topProjectsResults = document.getElementById('topProjectsResults');
+            topProjectsResults.innerHTML = '';
+            
+            const topProjects = [
+                { name: 'Smart Campus App', team: 'Innovation Squad', nominations: 8 },
+                { name: 'AI Tutor System', team: 'Tech Wizards', nominations: 7 },
+                { name: 'Green Energy Monitor', team: 'Eco Warriors', nominations: 6 },
+                { name: 'Community Health App', team: 'Health Heroes', nominations: 5 },
+                { name: 'Virtual Lab Platform', team: 'Science Pioneers', nominations: 4 }
+            ];
+            
+            topProjects.forEach((project, index) => {
+                const finalistCard = document.createElement('div');
+                finalistCard.className = 'finalist-card';
+                finalistCard.innerHTML = `
+                    <div style="display: flex; align-items: center;">
+                        <div class="finalist-position">${index + 1}</div>
+                        <div class="finalist-details">
+                            <div class="finalist-name">${project.name}</div>
+                            <div style="font-size: 12px; color: #7f8c8d;">Team: ${project.team}</div>
+                        </div>
+                    </div>
+                    <div class="finalist-count">${project.nominations} nominations</div>
+                `;
+                topProjectsResults.appendChild(finalistCard);
+            });
+        }
+
+        // Update analytics
+        function updateAnalytics() {
+            // Set analytics values
+            document.getElementById('totalStudentNoms').textContent = '89';
+            document.getElementById('uniqueStudents').textContent = registeredStudents.length;
+            document.getElementById('avgStudentNoms').textContent = '5.2';
+            document.getElementById('topStudentCategory').textContent = 'Innovation';
+            
+            document.getElementById('totalProjectNoms').textContent = '36';
+            document.getElementById('uniqueProjects').textContent = '15';
+            document.getElementById('avgProjectNoms').textContent = '2.4';
+            document.getElementById('topProjectCategory').textContent = 'Technical';
+            
+            // Populate student category chart
+            const studentCategoryChart = document.getElementById('studentCategoryChart');
+            studentCategoryChart.innerHTML = '';
+            
+            const studentCategoryData = [
+                { category: 'Most Innovative', count: 25 },
+                { category: 'Community Impact', count: 18 },
+                { category: 'Academic Performer', count: 15 },
+                { category: 'Supportive Peer', count: 12 },
+                { category: 'Team Player', count: 11 },
+                { category: 'Most Improved', count: 8 }
+            ];
+            
+            studentCategoryData.forEach(item => {
+                const percentage = (item.count / 25) * 100;
+                const barItem = document.createElement('div');
+                barItem.className = 'bar-item';
+                barItem.innerHTML = `
+                    <div class="bar-label">${item.category}</div>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="width: ${percentage}%; background: #3498db;"></div>
+                    </div>
+                    <div class="bar-value">${item.count}</div>
+                `;
+                studentCategoryChart.appendChild(barItem);
+            });
+            
+            // Populate project category chart
+            const projectCategoryChart = document.getElementById('projectCategoryChart');
+            projectCategoryChart.innerHTML = '';
+            
+            const projectCategoryData = [
+                { category: 'Technical Implementation', count: 12 },
+                { category: 'Innovation', count: 10 },
+                { category: 'UI/UX Design', count: 7 },
+                { category: 'Community Impact', count: 5 },
+                { category: 'Collaboration', count: 2 }
+            ];
+            
+            projectCategoryData.forEach(item => {
+                const percentage = (item.count / 12) * 100;
+                const barItem = document.createElement('div');
+                barItem.className = 'bar-item';
+                barItem.innerHTML = `
+                    <div class="bar-label">${item.category}</div>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="width: ${percentage}%; background: #27ae60;"></div>
+                    </div>
+                    <div class="bar-value">${item.count}</div>
+                `;
+                projectCategoryChart.appendChild(barItem);
+            });
+            
+            // Populate campus chart
+            const campusChart = document.getElementById('campusChart');
+            campusChart.innerHTML = '';
+            
+            const campusData = [
+                { campus: 'Main Campus', count: 45 },
+                { campus: 'Arcadia Campus', count: 32 },
+                { campus: 'Polokwane Campus', count: 18 },
+                { campus: 'Nelspruit Campus', count: 15 },
+                { campus: 'Soshanguve Campus', count: 10 },
+                { campus: 'Emalahleni Campus', count: 5 }
+            ];
+            
+            campusData.forEach(item => {
+                const percentage = (item.count / 45) * 100;
+                const barItem = document.createElement('div');
+                barItem.className = 'bar-item';
+                barItem.innerHTML = `
+                    <div class="bar-label">${item.campus}</div>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="width: ${percentage}%; background: #9b59b6;"></div>
+                    </div>
+                    <div class="bar-value">${item.count}</div>
+                `;
+                campusChart.appendChild(barItem);
+            });
+        }
+
+        // Filter student nominations
+        function filterStudentNominations() {
+            // This would filter the student nominations table
+            console.log('Filtering student nominations...');
+        }
+
+        // Filter project nominations
+        function filterProjectNominations() {
+            // This would filter the project nominations table
+            console.log('Filtering project nominations...');
+        }
+
+        // Export functions
+        function exportAllData() {
+            alert('Exporting all data to Excel...');
+        }
+
+        function exportStudentData() {
+            alert('Exporting student data to Excel...');
+        }
+
+        function exportProjectData() {
+            alert('Exporting project data to Excel...');
+        }
+
+        function exportResultsData() {
+            alert('Exporting results data to Excel...');
+        }
+
+        function generateCompleteReport() {
+            alert('Generating complete PDF report...');
+        }
+
+        // Settings functions
+        function updateNominationPeriod() {
+            alert('Nomination period updated!');
+        }
+
+        function toggleNominations(open) {
+            if (open) {
+                alert('Nominations are now OPEN!');
+                document.getElementById('nominationStatus').textContent = 'ACTIVE';
+                document.getElementById('nominationStatus').className = 'status-badge status-completed';
+            } else {
+                alert('Nominations are now CLOSED!');
+                document.getElementById('nominationStatus').textContent = 'CLOSED';
+                document.getElementById('nominationStatus').className = 'status-badge status-closed';
+            }
+        }
+
+        function resetNominations() {
+            if (confirm('Are you sure you want to reset ALL nominations? This action cannot be undone.')) {
+                alert('All nominations have been reset!');
+            }
+        }
+
+        function backupSystem() {
+            alert('System backup created successfully!');
+        }
+
+        function addAdmin() {
+            const email = document.getElementById('newAdminEmail').value;
+            if (email) {
+                alert(`Admin ${email} added successfully!`);
+                document.getElementById('newAdminEmail').value = '';
+            } else {
+                alert('Please enter an email address');
+            }
+        }
+
+        function saveSettings() {
+            alert('All settings saved successfully!');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pre-fill with test data for demo
+            document.getElementById('adminEmail').value = 'admin@tut.ac.za';
+            document.getElementById('password').value = 'admin123';
+        });
+    </script>
+</body>
+</html>

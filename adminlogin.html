@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ICEP AWARDS 2025 - Admin Portal</title>
+
+  <style>
+    /* ========== General Page Styling ========== */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: 1px;
+      color: #fff;
+    }
+
+    .header p {
+      color: #00bcd4;
+      font-size: 14px;
+    }
+
+    .admin-info {
+      background-color: rgba(0, 188, 212, 0.15);
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 25px;
+      border: 1px solid #00bcd4;
+      font-size: 13px;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .login-header h2 {
+      margin: 0;
+      color: #fff;
+    }
+
+    .login-header p {
+      font-size: 13px;
+      color: #b0bec5;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+      color: #e0f7fa;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #333;
+    }
+
+    .btn {
+      background-color: #00bcd4;
+      border: none;
+      color: #fff;
+      padding: 12px;
+      font-size: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #0097a7;
+    }
+
+    small {
+      color: #b2ebf2;
+    }
+
+    .footer-text {
+      text-align: center;
+      margin-top: 20px;
+      color: #90a4ae;
+      font-size: 12px;
+    }
+  </style>
+
+  <script>
+    // Login function
+    function login() {
+    const email = document.getElementById('adminEmail').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+        if (!email || !password) {
+            alert('Please enter both email and password.');
+            return;
+        }
+
+        if (!email.endsWith('@tut.ac.za')) {
+            alert('Please use your official TUT admin email address (@tut.ac.za)');
+            return;
+        }
+
+        fetch('admin_dashboard.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Optional: store login info in session/local storage if needed
+                sessionStorage.setItem('adminEmail', data.email);
+                sessionStorage.setItem('adminName', data.name);
+                sessionStorage.setItem('adminCampus', data.campus);
+
+                alert(`Welcome, ${data.name}!`);
+
+                // ✅ Redirect to the admin dashboard page
+                window.location.href = 'admin.html';
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Error connecting to server. Make sure XAMPP is running.');
+        });
+    }
+
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="screen" id="screen-login">
+      <div class="header">
+        <h1>ICEP AWARDS 2025</h1>
+        <p>Admin Portal</p>
+      </div>
+
+      <div style="padding: 10px;">
+        <div class="admin-info">
+          <strong>🔐 ADMINISTRATOR ACCESS</strong><br>
+          <small>Full system oversight and management</small>
+        </div>
+
+        <div class="login-header">
+          <h2>Administrator Login</h2>
+          <p>Access the nomination management system</p>
+        </div>
+
+        <div class="form-group">
+          <label for="adminEmail">Admin Email</label>
+          <input type="email" id="adminEmail" placeholder="e.g., admin@tut.ac.za" value="admin@tut.ac.za">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter admin password" value="admin123">
+        </div>
+
+        <button class="btn" onclick="login()">LOG IN AS ADMIN</button>
+
+        <div class="footer-text">
+          <p>Restricted Access | Authorized Personnel Only</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
+   
+
+  

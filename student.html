@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICEP AWARDS 2025 - Nomination Portal</title>
+    <link rel="stylesheet" href="student.css">
+   
+</head>
+<body>
+    <div class="container">
+        <!-- Screen 1: Login -->
+        <div class="screen active" id="screen-login">
+            <div class="header">
+                <h1>ICEP AWARDS 2025</h1>
+                <p>Nomination Portal</p>
+            </div>
+            <div style="padding: 30px;">
+                <div class="form-group">
+                    <label>Select Your Campus</label>
+                    <div class="campus-selector">
+                        <div class="campus-option" onclick="selectCampus('sosha')">
+                            <h3>🏫 Soshanguve Campus</h3>
+                            <p>South Campus</p>
+                        </div>
+                        <div class="campus-option" onclick="selectCampus('polokwane')">
+                            <h3>🏛️ Polokwane Campus</h3>
+                            <p>Limpopo Province</p>
+                        </div>
+                        <div class="campus-option" onclick="selectCampus('emalahleni')">
+                            <h3>🏢 eMalahleni Campus</h3>
+                            <p>Mpumalanga Province</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="studentEmail">TUT Student Email</label>
+                    <input type="email" id="studentEmail" placeholder="e.g., s12345678@tut4life.ac.za" value="s12345678@tut4life.ac.za">
+                    <div style="font-size: 12px; color: #7f8c8d; margin-top: 5px;">
+                        Use your official <span class="email-domain">@tut4life.ac.za</span> email address
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" value="password">
+                </div>
+                <button class="btn btn-block" onclick="login()">LOG IN</button>
+                
+                <div style="text-align: center; margin-top: 20px; color: #7f8c8d; font-size: 12px;">
+                    <p>Forgot Password? | Need Help?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 2: Nomination -->
+        <div class="screen" id="screen-nomination">
+            <div class="header">
+                <h1>Student Nominations</h1>
+                <p>Nominate one student for each category</p>
+            </div>
+            <div style="padding: 30px;">
+                <div class="progress-info" id="progressInfo">
+                    <!-- Progress information will be shown here -->
+                </div>
+
+                <div id="incompleteWarning" class="incomplete-categories" style="display: none;">
+                    <!-- Incomplete categories warning -->
+                </div>
+
+                <!-- Categories will be displayed here -->
+                <div id="categories-container">
+                    <!-- Categories will be dynamically populated -->
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-dashboard')">← BACK TO DASHBOARD</button>
+                    <button class="btn btn-success" id="submitBtn" onclick="confirmSubmission()">SUBMIT ALL NOMINATIONS</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 3: Dashboard -->
+        <div class="screen" id="screen-dashboard">
+            <div class="header">
+                <h1>Welcome, <span id="userName">JOHN DOE</span></h1>
+                <p>ICEP Awards 2024 Dashboard - <span id="campusName">Soshanguve Campus</span></p>
+            </div>
+            <div style="padding: 30px;">
+                <div class="form-group">
+                    <h3 style="margin-bottom: 15px;">📋 MY NOMINATIONS 
+                        <span id="completedBadge" class="completed-badge" style="display: none;">COMPLETED</span>
+                    </h3>
+                    <div id="nominationList">
+                        <!-- Nominations will be displayed here -->
+                    </div>
+                    <div class="view-all-btn" id="viewAllBtn" style="display: none;">
+                        <button class="btn btn-outline" onclick="showAllNominationsScreen()">View All Nominations</button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <h3 style="margin-bottom: 15px;">🚀 QUICK ACTIONS</h3>
+                    <button class="btn btn-block" id="nominationBtn" onclick="showScreen('screen-nomination')">+ START NOMINATION</button>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px; color: #7f8c8d; font-size: 12px;">
+                    <p>Nomination Period: Jan 15 - Feb 15, 2024</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 4: All Nominations View -->
+        <div class="screen" id="screen-all-nominations">
+            <div class="header">
+                <h1>All My Nominations</h1>
+                <p>Complete overview of your nominations</p>
+            </div>
+            <div style="padding: 30px;">
+                <div id="allNominationsList">
+                    <!-- All nominations will be displayed here -->
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-dashboard')">← BACK TO DASHBOARD</button>
+                    <button class="btn btn-outline" id="viewLessBtn" onclick="showLessNominations()">VIEW LESS</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 5: Confirmation -->
+        <div class="screen" id="screen-confirmation">
+            <div class="header">
+                <h1>Nominations Submitted!</h1>
+                <p>Thank you for your participation</p>
+            </div>
+            <div style="padding: 30px;">
+                <div class="confirmation-icon">✅</div>
+                
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h3 style="color: #27ae60; margin-bottom: 20px;">ALL NOMINATIONS SUBMITTED SUCCESSFULLY!</h3>
+                    <p style="color: #7f8c8d; margin-bottom: 20px;">You have completed the nomination process. Thank you for recognizing your peers!</p>
+                    
+                    <div id="submission-summary" style="text-align: left; background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                        <!-- Submission summary will appear here -->
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-block" onclick="showScreen('screen-dashboard')">BACK TO DASHBOARD</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="confirmation-modal" id="confirmationModal" style="display: none;">
+        <div class="modal-content">
+            <div class="confirmation-icon">⚠️</div>
+            <h3 style="margin-bottom: 15px;">Confirm Submission</h3>
+            <p style="margin-bottom: 20px; color: #7f8c8d;">You are about to submit your nominations. This action cannot be undone. Are you sure you want to proceed?</p>
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="closeConfirmation()">CANCEL</button>
+                <button class="btn btn-success" onclick="submitAllNominations()">YES, SUBMIT NOMINATIONS</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Campus-specific student data
+        const campusStudents = {
+            'sosha': [
+                // PROJECT 1: DOCSECURE
+                { id: '221314727', name: 'Nzuzo Khanyile', email: 'nkhanyile@tut4life.ac.za', programme: 'Informatics', role: 'Scrum Master / Business Analyst', specialization: 'Project Management & Business Analysis', project: 'Project 1: DOCSECURE', avatar: '👨‍💼', categories: ['scrum_master', 'business_analyst', 'overall', 'supportive', 'punctual'] },
+                { id: '220319849', name: 'Precious Hlahla', email: 'phlahla@tut4life.ac.za', programme: 'Software Engineering', role: 'Tester', specialization: 'Quality Assurance', project: 'Project 1: DOCSECURE', avatar: '👩‍💻', categories: ['tester', 'overall', 'supportive', 'punctual'] },
+                { id: '220366510', name: 'Siphokuhle Komeni', email: 'skomeni@tut4life.ac.za', programme: 'Computer Science', role: 'Front-End Developer', specialization: 'UI Development', project: 'Project 1: DOCSECURE', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '224555741', name: 'Boitumelo Molekoa', email: 'bmolekoa@tut4life.ac.za', programme: 'Software Engineering', role: 'Front-End / UI/UX Designer', specialization: 'UI/UX Design', project: 'Project 1: DOCSECURE', avatar: '👩‍🎨', categories: ['developer', 'overall', 'supportive', 'punctual'] },
+                { id: '220796167', name: 'Hluleko Hobyani', email: 'hhobyani@tut4life.ac.za', programme: 'Data Science', role: 'Back-End Developer', specialization: 'Server Development', project: 'Project 1: DOCSECURE', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '222507723', name: 'Junior Selatlha', email: 'jselatlha@tut4life.ac.za', programme: 'Informatics', role: 'Full-Stack Developer', specialization: 'Full-Stack Development', project: 'Project 1: DOCSECURE', avatar: '👨‍💻', categories: ['full_stack', 'developer', 'overall', 'supportive', 'punctual'] },
+                { id: '224375476', name: 'Koketso Boya', email: 'kboya@tut4life.ac.za', programme: 'IT Management', role: 'Business Analyst & System Architect', specialization: 'Business Analysis & System Architecture', project: 'Project 1: DOCSECURE', avatar: '👨‍💼', categories: ['business_analyst', 'overall', 'supportive', 'punctual'] },
+                { id: '221899229', name: 'Vuthlare Rikhotso', email: 'vrikhotso@tut4life.ac.za', programme: 'Computer Science', role: 'Back-End Developer', specialization: 'Server Development', project: 'Project 1: DOCSECURE', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+
+                // PROJECT 2: COMPUTING TRACK SYSTEM (TUT GUIDE APP)
+                { id: '220768600', name: 'Yamkela Zele', email: 'yzele@tut4life.ac.za', programme: 'IT Management', role: 'Scrum Master', specialization: 'Project Management', project: 'Project 2: TUT GUIDE APP', avatar: '👩‍💼', categories: ['scrum_master', 'overall', 'supportive', 'punctual'] },
+                { id: '221272420', name: 'Nonjabulo Guma', email: 'nguma@tut4life.ac.za', programme: 'Business Informatics', role: 'BA / Tester', specialization: 'Business Analysis & Testing', project: 'Project 2: TUT GUIDE APP', avatar: '👩‍💼', categories: ['business_analyst', 'tester', 'overall', 'supportive', 'punctual'] },
+                { id: '220778169', name: 'Innocent Mabasa', email: 'imabasa@tut4life.ac.za', programme: 'Computer Science', role: 'Back-End Developer', specialization: 'Server Development', project: 'Project 2: TUT GUIDE APP', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '223005012', name: 'Chantelle Moeng', email: 'cmoeng@tut4life.ac.za', programme: 'Data Science', role: 'Front-End Developer', specialization: 'UI Development', project: 'Project 2: TUT GUIDE APP', avatar: '👩‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '224118090', name: 'Sihle Mathole', email: 'smathole@tut4life.ac.za', programme: 'Software Engineering', role: 'Full-Stack Developer', specialization: 'Full-Stack Development', project: 'Project 2: TUT GUIDE APP', avatar: '👨‍💻', categories: ['full_stack', 'developer', 'overall', 'supportive', 'punctual'] },
+                { id: '220906779', name: 'Phodiso Ramushu', email: 'pramushu@tut4life.ac.za', programme: 'Software Engineering', role: 'Back-End Developer', specialization: 'Server Development', project: 'Project 2: TUT GUIDE APP', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '222878624', name: 'Kaizer Maphoso', email: 'kmaphoso@tut4life.ac.za', programme: 'Informatics', role: 'Business Analyst', specialization: 'Business Analysis', project: 'Project 2: TUT GUIDE APP', avatar: '👨‍💼', categories: ['business_analyst', 'overall', 'supportive', 'punctual'] },
+                { id: '219214588', name: 'Kamogelo Mokhomole', email: 'kmokhomole@tut4life.ac.za', programme: 'IT Management', role: 'Front-End Developer', specialization: 'UI Development', project: 'Project 2: TUT GUIDE APP', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+
+                // PROJECT 3: INTELLIGENT SERVICE DELIVERY (MunicipalityHub)
+                { id: '223669883', name: 'Phiwe Mzizi', email: 'pmzizi@tut4life.ac.za', programme: 'Computer Science', role: 'Scrum Master / BA', specialization: 'Project Management & Business Analysis', project: 'Project 3: MunicipalityHub', avatar: '👨‍💼', categories: ['scrum_master', 'business_analyst', 'overall', 'supportive', 'punctual'] },
+                { id: '221223845', name: 'Sifiso Jantjie', email: 'sjantjie@tut4life.ac.za', programme: 'Software Engineering', role: 'System Tester', specialization: 'Quality Assurance', project: 'Project 3: MunicipalityHub', avatar: '👨‍💻', categories: ['tester', 'overall', 'supportive', 'punctual'] },
+                { id: '223438873', name: 'Olerato Manye', email: 'omanye@tut4life.ac.za', programme: 'Informatics', role: 'Front-End Developer', specialization: 'UI Development', project: 'Project 3: MunicipalityHub', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '221286626', name: 'Leago Shalang', email: 'lshalang@tut4life.ac.za', programme: 'Data Science', role: 'Back-End Developer', specialization: 'Server Development', project: 'Project 3: MunicipalityHub', avatar: '👩‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '222417961', name: 'Della Raolane', email: 'draolane@tut4life.ac.za', programme: 'IT Management', role: 'Full-Stack Developer', specialization: 'Full-Stack Development', project: 'Project 3: MunicipalityHub', avatar: '👩‍💻', categories: ['full_stack', 'developer', 'overall', 'supportive', 'punctual'] },
+                { id: '220571556', name: 'Khomotjo Modiba', email: 'kmodiba@tut4life.ac.za', programme: 'Computer Science', role: 'UX/UI Designer', specialization: 'User Experience Design', project: 'Project 3: MunicipalityHub', avatar: '👩‍🎨', categories: ['developer', 'overall', 'supportive', 'punctual'] },
+                { id: '221595491', name: 'Dimpho Tukane', email: 'dtukane@tut4life.ac.za', programme: 'Software Engineering', role: 'Back-End Developer', specialization: 'Server Development', project: 'Project 3: MunicipalityHub', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+
+                // PROJECT 4: FUEL MANAGEMENT SYSTEM (LiquiTech)
+                { id: '222691133', name: 'Kulani Shaun Mabasa', email: 'kmabasa@tut4life.ac.za', programme: 'Informatics', role: 'Full-Stack Developer', specialization: 'Full-Stack Development', project: 'Project 4: LiquiTech', avatar: '👨‍💻', categories: ['full_stack', 'developer', 'overall', 'supportive', 'punctual'] },
+                { id: '220492311', name: 'Mkhuleko Shongwe', email: 'mshongwe@tut4life.ac.za', programme: 'IT Management', role: 'Back-End Developer', specialization: 'Server Development', project: 'Project 4: LiquiTech', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '222661048', name: 'Kamogelo Taylor Mmekwa', email: 'kmmekwa@tut4life.ac.za', programme: 'Computer Science', role: 'Front-End Developer', specialization: 'UI Development', project: 'Project 4: LiquiTech', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '224113951', name: 'Neo Terrence Mkhabela', email: 'nmkhabela@tut4life.ac.za', programme: 'Software Engineering', role: 'Scrum Master', specialization: 'Project Management', project: 'Project 4: LiquiTech', avatar: '👨‍💼', categories: ['scrum_master', 'overall', 'supportive', 'punctual'] },
+                { id: '220670031', name: 'Melusi Hopewell Mathebula', email: 'mmathebula@tut4life.ac.za', programme: 'Data Science', role: 'Tester', specialization: 'Quality Assurance', project: 'Project 4: LiquiTech', avatar: '👨‍💻', categories: ['tester', 'overall', 'supportive', 'punctual'] },
+                { id: '221716213', name: 'Bothale Mpatlanyane', email: 'bmpatlanyane@tut4life.ac.za', programme: 'Informatics', role: 'Back-End Developer', specialization: 'Server Development', project: 'Project 4: LiquiTech', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+
+                // PROJECT 5: DIGIFIKILE (EduBridge)
+                { id: '223062938', name: 'Lethabo Tlala', email: 'ltlala@tut4life.ac.za', programme: 'Data Science', role: 'Scrum Master', specialization: 'Project Management', project: 'Project 5: EduBridge', avatar: '👩‍💼', categories: ['scrum_master', 'overall', 'supportive', 'punctual'] },
+                { id: '220288307', name: 'Mandlenkosi Nyathi', email: 'mnyathi@tut4life.ac.za', programme: 'Software Engineering', role: 'Tester', specialization: 'Quality Assurance', project: 'Project 5: EduBridge', avatar: '👨‍💻', categories: ['tester', 'overall', 'supportive', 'punctual'] },
+                { id: '220844617', name: 'Inamfumu Ketsia Mwanza', email: 'imwanza@tut4life.ac.za', programme: 'Business Informatics', role: 'Business Analyst', specialization: 'Business Analysis', project: 'Project 5: EduBridge', avatar: '👩‍💼', categories: ['business_analyst', 'overall', 'supportive', 'punctual'] },
+                { id: '220808750', name: 'Siphelele Miya', email: 'smiya@tut4life.ac.za', programme: 'IT Management', role: 'Full-Stack Developer', specialization: 'Full-Stack Development', project: 'Project 5: EduBridge', avatar: '👨‍💻', categories: ['full_stack', 'developer', 'overall', 'supportive', 'punctual'] },
+                { id: '216668731', name: 'Kearabetswe Maroleni', email: 'kmaroleni@tut4life.ac.za', programme: 'Computer Science', role: 'Front-End Developer', specialization: 'UI Development', project: 'Project 5: EduBridge', avatar: '👩‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '219999470', name: 'Xolane Shabalala', email: 'xshabalala@tut4life.ac.za', programme: 'Software Engineering', role: 'Front-End Developer', specialization: 'UI Development', project: 'Project 5: EduBridge', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '219982623', name: 'Lucky Madigoe', email: 'lmadigoe@tut4life.ac.za', programme: 'Computer Science', role: 'Back-End Developer', specialization: 'Server Development', project: 'Project 5: EduBridge', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '218259235', name: 'Siphiweyinkosi Zulu', email: 'szulu@tut4life.ac.za', programme: 'Software Engineering', role: 'Back-End Developer', specialization: 'Server Development', project: 'Project 5: EduBridge', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+
+                // PROJECT 6: SPORTS PERFORMANCE APP
+                { id: '221180305', name: 'Ntombi Manonga', email: 'nmanonga@tut4life.ac.za', programme: 'Informatics', role: 'Front-End Developer', specialization: 'UI Development', project: 'Project 6: Sports Performance App', avatar: '👩‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '220511286', name: 'Matome Maake', email: 'mmaake@tut4life.ac.za', programme: 'Software Engineering', role: 'Tester', specialization: 'Quality Assurance', project: 'Project 6: Sports Performance App', avatar: '👨‍💻', categories: ['tester', 'overall', 'supportive', 'punctual'] },
+                { id: '222949181', name: 'Katlego Sebola', email: 'ksebola@tut4life.ac.za', programme: 'Business Informatics', role: 'Business Analyst', specialization: 'Business Analysis', project: 'Project 6: Sports Performance App', avatar: '👨‍💼', categories: ['business_analyst', 'overall', 'supportive', 'punctual'] },
+                { id: '221436040', name: 'Brace Mathabela', email: 'bmathabela@tut4life.ac.za', programme: 'IT Management', role: 'DevOps', specialization: 'DevOps Engineering', project: 'Project 6: Sports Performance App', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual'] },
+                { id: '220268004', name: 'Tokollo Setetemela', email: 'tsetetemela@tut4life.ac.za', programme: 'Computer Science', role: 'UX/UI Designer', specialization: 'User Experience Design', project: 'Project 6: Sports Performance App', avatar: '👨‍🎨', categories: ['developer', 'overall', 'supportive', 'punctual'] },
+                { id: '221455827', name: 'Thabiso Bokaba', email: 'tbokaba@tut4life.ac.za', programme: 'Data Science', role: 'Data Scientist (AI/ML)', specialization: 'AI/ML Development', project: 'Project 6: Sports Performance App', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual'] },
+                { id: '216740092', name: 'Jabulile Mhlanga', email: 'jmhlanga@tut4life.ac.za', programme: 'Informatics', role: 'Front-End Developer', specialization: 'UI Development', project: 'Project 6: Sports Performance App', avatar: '👩‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '219569009', name: 'Tiyiselani Mlangeni', email: 'tmlangeni@tut4life.ac.za', programme: 'Data Science', role: 'Back-End Developer', specialization: 'Server Development', project: 'Project 6: Sports Performance App', avatar: '👩‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] }
+            ],
+            'polokwane': [
+                // POLOKWANE: PROJECT e-LibraryLog
+                { id: '224789840', name: 'Asisipho Mjojeli', email: 'amjojeli@tut4life.ac.za', programme: 'Computer Science', role: 'Developer', specialization: 'Software Development', project: 'Project: e-LibraryLog', avatar: '👩‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack', 'scrum_master'] },
+                { id: '222717841', name: 'Ronewa Nthabeni', email: 'rnthabeni@tut4life.ac.za', programme: 'Software Engineering', role: 'Developer', specialization: 'Software Development', project: 'Project: e-LibraryLog', avatar: '👩‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '223110568', name: 'Khensani Khoza', email: 'kkhoza@tut4life.ac.za', programme: 'Data Science', role: 'Developer', specialization: 'Software Development', project: 'Project: e-LibraryLog', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '223895956', name: 'Kamogelo Thlong', email: 'kthlong@tut4life.ac.za', programme: 'Informatics', role: 'Developer', specialization: 'Software Development', project: 'Project: e-LibraryLog', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '222958431', name: 'Samukelo Khumalo', email: 'skhumalo@tut4life.ac.za', programme: 'IT Management', role: 'Developer', specialization: 'Software Development', project: 'Project: e-LibraryLog', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '221402740', name: 'Tshepo Mtungwa', email: 'tmtungwa@tut4life.ac.za', programme: 'Computer Science', role: 'Developer', specialization: 'Software Development', project: 'Project: e-LibraryLog', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '230403716', name: 'Lesego Molalatladi', email: 'lmolalatladi@tut4life.ac.za', programme: 'Software Engineering', role: 'Developer', specialization: 'Software Development', project: 'Project: e-LibraryLog', avatar: '👩‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '224911670', name: 'Asimbonge Msizi', email: 'amsizi@tut4life.ac.za', programme: 'Data Science', role: 'Developer', specialization: 'Software Development', project: 'Project: e-LibraryLog', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '231933271', name: 'Madimetja Kgobe', email: 'mkgobe@tut4life.ac.za', programme: 'Informatics', role: 'Developer', specialization: 'Software Development', project: 'Project: e-LibraryLog', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '230547874', name: 'Mpho Ramaloko', email: 'mramaloko@tut4life.ac.za', programme: 'IT Management', role: 'Developer', specialization: 'Software Development', project: 'Project: e-LibraryLog', avatar: '👩‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '223950116', name: 'Nokwanda Hlatshwayo', email: 'nhlatshwayo@tut4life.ac.za', programme: 'Computer Science', role: 'Developer', specialization: 'Software Development', project: 'Project: e-LibraryLog', avatar: '👩‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '2320850097', name: 'Thabiso Mapoulo', email: 'tmapoulo@tut4life.ac.za', programme: 'Software Engineering', role: 'Developer', specialization: 'Software Development', project: 'Project: e-LibraryLog', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] }
+            ],
+            'emalahleni': [
+                // EMALAHLENI: PROJECT CampusTime
+                { id: '221506138', name: 'Nkgasha Matlou', email: 'nmatlou@tut4life.ac.za', programme: 'Computer Science', role: 'Developer', specialization: 'Software Development', project: 'Project: CampusTime', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack', 'scrum_master'] },
+                { id: '223296386', name: 'Ndivho Ramatshimbila', email: 'nramatshimbila@tut4life.ac.za', programme: 'Software Engineering', role: 'Developer', specialization: 'Software Development', project: 'Project: CampusTime', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '230874123', name: 'Musawekosi Manzini', email: 'mmanzini@tut4life.ac.za', programme: 'Data Science', role: 'Developer', specialization: 'Software Development', project: 'Project: CampusTime', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '223914926', name: 'Shauntel Mtshweni', email: 'smtshweni@tut4life.ac.za', programme: 'Informatics', role: 'Developer', specialization: 'Software Development', project: 'Project: CampusTime', avatar: '👩‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '222383714', name: 'Lindokuhle Zulu', email: 'lzulu@tut4life.ac.za', programme: 'IT Management', role: 'Developer', specialization: 'Software Development', project: 'Project: CampusTime', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '224001258', name: 'Kgethego Mabilo', email: 'kmabilo@tut4life.ac.za', programme: 'Computer Science', role: 'Developer', specialization: 'Software Development', project: 'Project: CampusTime', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '221619188', name: 'Kgomotso Ngomane', email: 'kngomane@tut4life.ac.za', programme: 'Software Engineering', role: 'Developer', specialization: 'Software Development', project: 'Project: CampusTime', avatar: '👩‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '224251971', name: 'Adel Baloyi', email: 'abaloyi@tut4life.ac.za', programme: 'Data Science', role: 'Developer', specialization: 'Software Development', project: 'Project: CampusTime', avatar: '👩‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '224631197', name: 'Amogelang Thomson', email: 'athomson@tut4life.ac.za', programme: 'Informatics', role: 'Developer', specialization: 'Software Development', project: 'Project: CampusTime', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '224529856', name: 'Bokang Malebo', email: 'bmalebo@tut4life.ac.za', programme: 'IT Management', role: 'Developer', specialization: 'Software Development', project: 'Project: CampusTime', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '223959806', name: 'Lindani Mayisela', email: 'lmayisela@tut4life.ac.za', programme: 'Computer Science', role: 'Developer', specialization: 'Software Development', project: 'Project: CampusTime', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '222864003', name: 'Nomcebo Kubheka', email: 'nkubheka@tut4life.ac.za', programme: 'Software Engineering', role: 'Developer', specialization: 'Software Development', project: 'Project: CampusTime', avatar: '👩‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '223794068', name: 'Keabetswe Anta', email: 'kanta@tut4life.ac.za', programme: 'Data Science', role: 'Developer', specialization: 'Software Development', project: 'Project: CampusTime', avatar: '👩‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '223495028', name: 'Mashudu Nemutudi', email: 'mnemutudi@tut4life.ac.za', programme: 'Informatics', role: 'Developer', specialization: 'Software Development', project: 'Project: CampusTime', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] },
+                { id: '230850097', name: 'Mapoulo Manuel', email: 'mmanuel@tut4life.ac.za', programme: 'IT Management', role: 'Developer', specialization: 'Software Development', project: 'Project: CampusTime', avatar: '👨‍💻', categories: ['developer', 'overall', 'supportive', 'punctual', 'full_stack'] }
+            ]
+        };
+
+        // Campus-specific categories (removed IT Support and Technical Excellence from Soshanguve)
+        const campusCategories = {
+            'sosha': {
+                'overall': 'Best Overall Intern',
+                'supportive': 'Best Supportive / Most Dedicated Intern',
+                'full_stack': 'Top Full Stack Intern',
+                'punctual': 'Most Punctual Intern',
+                'scrum_master': 'Top Scrum Master Intern',
+                'developer': 'Top Developer Intern',
+                'business_analyst': 'Top Business Analyst Intern',
+                'tester': 'Top Software Tester Intern'
+            },
+            'polokwane': {
+                'overall': 'Best Overall Intern',
+                'supportive': 'Best Supportive / Most Dedicated Intern',
+                'full_stack': 'Top Full Stack Intern',
+                'punctual': 'Most Punctual Intern',
+                'scrum_master': 'Top Scrum Master Intern',
+                'developer': 'Top Developer Intern'
+            },
+            'emalahleni': {
+                'overall': 'Best Overall Intern',
+                'supportive': 'Best Supportive / Most Dedicated Intern',
+                'full_stack': 'Top Full Stack Intern',
+                'punctual': 'Most Punctual Intern',
+                'scrum_master': 'Top Scrum Master Intern',
+                'developer': 'Top Developer Intern'
+            }
+        };
+
+        const categoryQuestions = {
+            'overall': 'How has this intern demonstrated exceptional overall performance, leadership, and contribution to the team?',
+            'supportive': 'How has this intern shown exceptional dedication, supportiveness, and commitment to helping others succeed?',
+            'full_stack': 'What examples demonstrate this intern\'s excellence in both front-end and back-end development?',
+            'punctual': 'How has this intern consistently demonstrated punctuality, reliability, and meeting deadlines?',
+            'scrum_master': 'How has this Scrum Master demonstrated exceptional leadership, facilitation, and team coordination skills?',
+            'developer': 'What makes this developer stand out in terms of technical skills, problem-solving, and code quality?',
+            'business_analyst': 'How has this Business Analyst shown excellence in requirements gathering, analysis, and stakeholder communication?',
+            'tester': 'How has this Tester shown excellence in quality assurance, bug detection, and ensuring product reliability?'
+        };
+
+        let currentStudent = null;
+        let allNominations = [];
+        let submissionsClosed = false;
+        let showAllOnDashboard = false;
+        let selectedCampus = 'sosha';
+        let students = campusStudents[selectedCampus];
+        let categories = campusCategories[selectedCampus];
+
+        // Campus selection function
+        function selectCampus(campus) {
+            selectedCampus = campus;
+            // Update visual selection
+            document.querySelectorAll('.campus-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            // Update categories based on campus
+            categories = campusCategories[selectedCampus];
+        }
+
+        // Create category sections dynamically
+        function createCategorySections() {
+            const container = document.getElementById('categories-container');
+            container.innerHTML = '';
+            
+            Object.keys(categories).forEach(category => {
+                const categorySection = document.createElement('div');
+                categorySection.className = 'category-section';
+                categorySection.innerHTML = `
+                    <div class="category-header">
+                        <span>${getCategoryIcon(category)} ${categories[category]}</span>
+                        <span class="status-badge status-pending" id="status-${category}">PENDING</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Select Student to Nominate:</label>
+                        <div class="search-box">
+                            <input type="text" id="search-${category}" placeholder="Search students..." onkeyup="filterStudents('${category}')">
+                        </div>
+                        <div class="students-grid" id="${category}-students">
+                            <!-- Students for this category will be populated here -->
+                        </div>
+                        <div class="student-count" id="${category}-count"></div>
+                    </div>
+
+                    <div id="${category}-nominations">
+                        <!-- Nominations for this category will appear here -->
+                    </div>
+                `;
+                container.appendChild(categorySection);
+            });
+        }
+
+        // Get category icon
+        function getCategoryIcon(category) {
+            const icons = {
+                'overall': '🏆',
+                'supportive': '🤝',
+                'full_stack': '🔧',
+                'punctual': '⏰',
+                'scrum_master': '👨‍💼',
+                'developer': '👨‍💻',
+                'business_analyst': '📊',
+                'tester': '🔍'
+            };
+            return icons[category] || '🎯';
+        }
+
+        // Update progress information
+        function updateProgressInfo() {
+            const completedCount = allNominations.filter(nom => nom.reason.trim()).length;
+            const totalCategories = Object.keys(categories).length;
+            const progressInfo = document.getElementById('progressInfo');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            progressInfo.innerHTML = `
+                <strong>Nomination Progress:</strong> ${completedCount}/${totalCategories} categories completed
+                ${completedCount === totalCategories ? 
+                    '<span style="color: #27ae60; margin-left: 10px;">✓ Ready to submit!</span>' : 
+                    '<span style="color: #e74c3c; margin-left: 10px;">Please complete all categories</span>'
+                }
+            `;
+
+            // Update submit button state
+            submitBtn.disabled = completedCount !== totalCategories;
+        }
+
+        // Update category status badges
+        function updateCategoryStatus() {
+            Object.keys(categories).forEach(category => {
+                const nomination = allNominations.find(nom => nom.category === category);
+                const statusElement = document.getElementById(`status-${category}`);
+                
+                if (nomination && nomination.reason.trim()) {
+                    statusElement.textContent = 'COMPLETED';
+                    statusElement.className = 'status-badge status-completed';
+                } else {
+                    statusElement.textContent = 'PENDING';
+                    statusElement.className = 'status-badge status-pending';
+                }
+            });
+        }
+
+        // Show incomplete categories warning
+        function updateIncompleteWarning() {
+            const incompleteWarning = document.getElementById('incompleteWarning');
+            const incompleteCategories = Object.keys(categories).filter(category => {
+                const nomination = allNominations.find(nom => nom.category === category);
+                return !nomination || !nomination.reason.trim();
+            });
+
+            if (incompleteCategories.length > 0) {
+                incompleteWarning.style.display = 'block';
+                incompleteWarning.innerHTML = `
+                    <strong>⚠️ Incomplete Categories:</strong> 
+                    Please complete nominations for: ${incompleteCategories.map(cat => categories[cat]).join(', ')}
+                `;
+            } else {
+                incompleteWarning.style.display = 'none';
+            }
+        }
+
+        // Update dashboard nominations list (showing only 2 nominations)
+        function updateDashboardNominations() {
+            const nominationList = document.getElementById('nominationList');
+            const viewAllBtn = document.getElementById('viewAllBtn');
+            
+            if (allNominations.length === 0) {
+                nominationList.innerHTML = `
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        <div style="font-weight: 600;">No nominations yet</div>
+                        <div style="color: #7f8c8d; font-size: 12px; margin-top: 5px;">Start nominating to see your selections here</div>
+                    </div>
+                `;
+                viewAllBtn.style.display = 'none';
+            } else {
+                // Show only first 2 nominations
+                const displayedNominations = showAllOnDashboard ? allNominations : allNominations.slice(0, 2);
+                const hiddenCount = allNominations.length - displayedNominations.length;
+                
+                nominationList.innerHTML = displayedNominations.map(nomination => `
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        <div style="font-weight: 600;">${categories[nomination.category]}</div>
+                        <div style="color: #7f8c8d; font-size: 12px;">Nominee: ${nomination.student.name}</div>
+                        <div style="color: ${nomination.reason.trim() ? '#27ae60' : '#e74c3c'}; font-size: 12px; margin-top: 5px;">
+                            ${nomination.reason.trim() ? '✓ Completed' : '⏳ Pending reason'}
+                        </div>
+                    </div>
+                `).join('');
+
+                // Show "View All" button if there are more than 2 nominations
+                if (allNominations.length > 2 && !showAllOnDashboard) {
+                    viewAllBtn.style.display = 'block';
+                    viewAllBtn.innerHTML = `
+                        <button class="btn btn-outline" onclick="showAllNominationsScreen()">
+                            View All Nominations (${hiddenCount} more)
+                        </button>
+                    `;
+                } else if (showAllOnDashboard) {
+                    viewAllBtn.style.display = 'block';
+                    viewAllBtn.innerHTML = `
+                        <button class="btn btn-outline" onclick="showLessNominations()">
+                            Show Less
+                        </button>
+                    `;
+                } else {
+                    viewAllBtn.style.display = 'none';
+                }
+
+                // Show nomination count
+                nominationList.innerHTML += `
+                    <div class="nomination-count">
+                        ${allNominations.length} nomination${allNominations.length !== 1 ? 's' : ''} total
+                    </div>
+                `;
+            }
+        }
+
+        // Show all nominations on dashboard
+        function showAllNominations() {
+            showAllOnDashboard = true;
+            updateDashboardNominations();
+        }
+
+        // Show less nominations on dashboard
+        function showLessNominations() {
+            showAllOnDashboard = false;
+            updateDashboardNominations();
+            showScreen('screen-dashboard');
+        }
+
+        // Show all nominations in separate screen
+        function showAllNominationsScreen() {
+            const allNominationsList = document.getElementById('allNominationsList');
+            
+            if (allNominations.length === 0) {
+                allNominationsList.innerHTML = `
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        <div style="font-weight: 600;">No nominations yet</div>
+                        <div style="color: #7f8c8d; font-size: 12px; margin-top: 5px;">Start nominating to see your selections here</div>
+                    </div>
+                `;
+            } else {
+                allNominationsList.innerHTML = allNominations.map(nomination => `
+                    <div class="category-section">
+                        <div class="category-header">
+                            <span>${getCategoryIcon(nomination.category)} ${categories[nomination.category]}</span>
+                            <span class="status-badge ${nomination.reason.trim() ? 'status-completed' : 'status-pending'}">
+                                ${nomination.reason.trim() ? 'COMPLETED' : 'PENDING'}
+                            </span>
+                        </div>
+                        <div class="student-profile">
+                            <div style="font-size: 40px;">${nomination.student.avatar}</div>
+                            <div class="student-info">
+                                <h4>${nomination.student.name} <span class="project-badge">${nomination.student.project}</span> <span class="campus-badge">${getCampusName(selectedCampus)}</span></h4>
+                                <p><strong>Role:</strong> ${nomination.student.role}</p>
+                                <p><strong>Student Number:</strong> ${nomination.student.id}</p>
+                                <p><strong>Email:</strong> ${nomination.student.email}</p>
+                                <p><strong>Programme:</strong> ${nomination.student.programme}</p>
+                                <p><strong>Specialization:</strong> ${nomination.student.specialization}</p>
+                            </div>
+                        </div>
+                        <div style="background: white; padding: 15px; border-radius: 8px;" class="${submissionsClosed ? 'readonly-nomination' : ''}">
+                            <div>
+                                <strong>Nomination Reason:</strong> 
+                                <div style="margin-top: 5px; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+                                    ${nomination.reason.trim() ? nomination.reason : '<em style="color: #7f8c8d;">No reason provided yet</em>'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            showScreen('screen-all-nominations');
+        }
+
+        // Get campus name for display
+        function getCampusName(campusCode) {
+            const campusNames = {
+                'sosha': 'Soshanguve',
+                'polokwane': 'Polokwane',
+                'emalahleni': 'eMalahleni'
+            };
+            return campusNames[campusCode] || campusCode;
+        }
+
+        // Filter and display students for each category
+        function populateCategoryStudents() {
+            Object.keys(categories).forEach(category => {
+                const container = document.getElementById(`${category}-students`);
+                const searchTerm = document.getElementById(`search-${category}`).value.toLowerCase();
+                
+                // Filter students for this category
+                const filteredStudents = students.filter(student => 
+                    student.categories.includes(category) && 
+                    student.email !== currentStudent
+                );
+                
+                container.innerHTML = '';
+                
+                filteredStudents.forEach(student => {
+                    const card = document.createElement('div');
+                    
+                    // Check if this category already has a nomination
+                    const hasNomination = allNominations.some(nom => nom.category === category);
+                    const isNominated = allNominations.some(nom => 
+                        nom.student.email === student.email && nom.category === category
+                    );
+                    
+                    card.className = `student-card ${hasNomination && !isNominated ? 'disabled' : ''} ${submissionsClosed ? 'disabled' : ''}`;
+                    card.innerHTML = `
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <div style="font-size: 24px;">${student.avatar}</div>
+                            <div>
+                                <div class="student-name">${student.name} <span class="project-badge">${student.project}</span></div>
+                                <div class="student-id">${student.email} • ${student.programme}</div>
+                                <div style="font-size: 11px; color: #3498db; margin-top: 2px;">${student.role} • ${student.specialization}</div>
+                                ${isNominated ? '<div style="color: #27ae60; font-size: 11px; margin-top: 5px;">✓ Nominated</div>' : ''}
+                            </div>
+                        </div>
+                    `;
+                    
+                    if ((!hasNomination || isNominated) && !submissionsClosed) {
+                        card.onclick = () => addNomination(category, student);
+                    }
+                    
+                    container.appendChild(card);
+                });
+
+                // Update student count
+                const nominatedCount = allNominations.filter(nom => nom.category === category).length;
+                document.getElementById(`${category}-count`).textContent = 
+                    `${filteredStudents.length} students available • ${nominatedCount}/1 nominated`;
+            });
+
+            updateProgressInfo();
+            updateCategoryStatus();
+            updateIncompleteWarning();
+            updateDashboardNominations();
+        }
+
+        // Search filter function
+        function filterStudents(category) {
+            const container = document.getElementById(`${category}-students`);
+            const searchTerm = document.getElementById(`search-${category}`).value.toLowerCase();
+            
+            container.innerHTML = '';
+            
+            const filteredStudents = students.filter(student => 
+                student.categories.includes(category) && 
+                student.email !== currentStudent &&
+                (student.name.toLowerCase().includes(searchTerm) || 
+                 student.email.toLowerCase().includes(searchTerm) ||
+                 student.id.toLowerCase().includes(searchTerm) ||
+                 student.programme.toLowerCase().includes(searchTerm) ||
+                 student.role.toLowerCase().includes(searchTerm) ||
+                 student.specialization.toLowerCase().includes(searchTerm) ||
+                 student.project.toLowerCase().includes(searchTerm))
+            );
+            
+            filteredStudents.forEach(student => {
+                const card = document.createElement('div');
+                
+                // Check if this category already has a nomination
+                const hasNomination = allNominations.some(nom => nom.category === category);
+                const isNominated = allNominations.some(nom => 
+                    nom.student.email === student.email && nom.category === category
+                );
+                
+                card.className = `student-card ${hasNomination && !isNominated ? 'disabled' : ''} ${submissionsClosed ? 'disabled' : ''}`;
+                card.innerHTML = `
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <div style="font-size: 24px;">${student.avatar}</div>
+                        <div>
+                            <div class="student-name">${student.name} <span class="project-badge">${student.project}</span></div>
+                            <div class="student-id">${student.email} • ${student.programme}</div>
+                            <div style="font-size: 11px; color: #3498db; margin-top: 2px;">${student.role} • ${student.specialization}</div>
+                            ${isNominated ? '<div style="color: #27ae60; font-size: 11px; margin-top: 5px;">✓ Nominated</div>' : ''}
+                        </div>
+                    </div>
+                `;
+                
+                if ((!hasNomination || isNominated) && !submissionsClosed) {
+                    card.onclick = () => addNomination(category, student);
+                }
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Add a nomination to the list
+        function addNomination(category, student) {
+            if (submissionsClosed) return;
+            
+            // Check if this category already has a nomination
+            const existingCategoryNomination = allNominations.find(nom => nom.category === category);
+            
+            if (existingCategoryNomination) {
+                // Replace the existing nomination
+                allNominations = allNominations.filter(nom => nom.category !== category);
+            }
+
+            const nomination = {
+                id: Date.now(), // Unique ID
+                category: category,
+                student: student,
+                reason: ''
+            };
+
+            allNominations.push(nomination);
+            updateNominationDisplay();
+            populateCategoryStudents(); // Refresh student lists to show disabled state
+        }
+
+        // Remove a nomination
+        function removeNomination(nominationId) {
+            if (submissionsClosed) return;
+            
+            allNominations = allNominations.filter(nom => nom.id !== nominationId);
+            updateNominationDisplay();
+            populateCategoryStudents(); // Refresh student lists to re-enable cards
+        }
+
+        // Update the nomination forms display
+        function updateNominationDisplay() {
+            Object.keys(categories).forEach(category => {
+                const container = document.getElementById(`${category}-nominations`);
+                container.innerHTML = '';
+                
+                const categoryNominations = allNominations.filter(nom => nom.category === category);
+                
+                if (categoryNominations.length > 0) {
+                    categoryNominations.forEach(nomination => {
+                        const nominationElement = document.createElement('div');
+                        nominationElement.className = `nomination-item ${submissionsClosed ? 'readonly-nomination' : ''}`;
+                        nominationElement.innerHTML = `
+                            <div class="student-profile">
+                                <div style="font-size: 40px;">${nomination.student.avatar}</div>
+                                <div class="student-info">
+                                    <h4>${nomination.student.name} <span class="project-badge">${nomination.student.project}</span> <span class="campus-badge">${getCampusName(selectedCampus)}</span></h4>
+                                    <p><strong>Role:</strong> ${nomination.student.role}</p>
+                                    <p><strong>Student Number:</strong> ${nomination.student.id}</p>
+                                    <p><strong>Email:</strong> ${nomination.student.email}</p>
+                                    <p><strong>Programme:</strong> ${nomination.student.programme}</p>
+                                    <p><strong>Specialization:</strong> ${nomination.student.specialization}</p>
+                                </div>
+                            </div>
+                            <div class="nomination-header">
+                                <strong>Nomination Details</strong>
+                                ${!submissionsClosed ? `<button class="remove-btn" onclick="removeNomination(${nomination.id})">Remove</button>` : ''}
+                            </div>
+                            <div class="form-group">
+                                <label>${categoryQuestions[category]} *</label>
+                                <textarea oninput="updateNominationReason(${nomination.id}, this.value)" 
+                                          placeholder="Provide specific examples and reasons..."
+                                          ${submissionsClosed ? 'disabled' : ''}>${nomination.reason}</textarea>
+                            </div>
+                        `;
+                        container.appendChild(nominationElement);
+                    });
+                }
+            });
+        }
+
+        // Update nomination details
+        function updateNominationReason(nominationId, reason) {
+            if (submissionsClosed) return;
+            const nomination = allNominations.find(nom => nom.id === nominationId);
+            if (nomination) {
+                nomination.reason = reason;
+                updateProgressInfo();
+                updateCategoryStatus();
+                updateIncompleteWarning();
+                updateDashboardNominations();
+            }
+        }
+
+        // Show confirmation modal
+        function confirmSubmission() {
+            // Check if all categories are completed
+            const incompleteCategories = Object.keys(categories).filter(category => {
+                const nomination = allNominations.find(nom => nom.category === category);
+                return !nomination || !nomination.reason.trim();
+            });
+
+            if (incompleteCategories.length > 0) {
+                alert(`Please complete all categories before submitting. Incomplete: ${incompleteCategories.map(cat => categories[cat]).join(', ')}`);
+                return;
+            }
+
+            document.getElementById('confirmationModal').style.display = 'flex';
+        }
+
+        // Close confirmation modal
+        function closeConfirmation() {
+            document.getElementById('confirmationModal').style.display = 'none';
+        }
+
+        // Submit all nominations
+        function submitAllNominations() {
+            closeConfirmation();
+            
+            // Close submissions
+            submissionsClosed = true;
+            
+            // Disable nomination button on dashboard
+            const nominationBtn = document.getElementById('nominationBtn');
+            nominationBtn.disabled = true;
+            nominationBtn.innerHTML = '✅ NOMINATIONS COMPLETED';
+            nominationBtn.classList.remove('btn');
+            nominationBtn.classList.add('btn-secondary');
+            
+            // Show completed badge
+            document.getElementById('completedBadge').style.display = 'inline-block';
+
+            // Update dashboard to show completed nominations
+            updateDashboardNominations();
+
+            // Show submission summary
+            const summary = document.getElementById('submission-summary');
+            summary.innerHTML = '<h4>Your submitted nominations:</h4>';
+            
+            allNominations.forEach(nomination => {
+                summary.innerHTML += `
+                    <div style="margin: 10px 0; padding: 10px; background: white; border-radius: 5px;">
+                        <strong>${categories[nomination.category]}</strong><br>
+                        <em>Nominee: ${nomination.student.name} (${nomination.student.project})</em><br>
+                        <small>Role: ${nomination.student.role} • Specialization: ${nomination.student.specialization}</small>
+                    </div>
+                `;
+            });
+
+            summary.innerHTML += `<div style="margin-top: 15px; padding: 10px; background: #27ae60; color: white; border-radius: 5px;">
+                <strong>Total Nominations Submitted: ${allNominations.length}</strong><br>
+                <small>You cannot make any more nominations.</small>
+            </div>`;
+
+            showScreen('screen-confirmation');
+        }
+
+        function login() {
+    const email = document.getElementById('studentEmail').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    if (!email || !password) {
+        alert('Please enter both email and password.');
+        return;
+    }
+
+    if (!email.endsWith('@tut4life.ac.za')) {
+        alert('Please use your official TUT student email address (@tut4life.ac.za)');
+        return;
+    }
+
+    fetch('student_login.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            // Save current student info
+            currentStudent = data.email;
+            document.getElementById('userName').textContent = data.name;
+            document.getElementById('campusName').textContent = data.campus.charAt(0).toUpperCase() + data.campus.slice(1) + " Campus";
+
+            // Proceed to dashboard
+            createCategorySections();
+            showScreen('screen-dashboard');
+            populateCategoryStudents();
+
+            alert(`Welcome, ${data.name}!`);
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Error connecting to server. Make sure XAMPP is running.');
+    });
+}
+
+
+        function showScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Show target screen
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        
+    </script>
+</body>
+</html>
