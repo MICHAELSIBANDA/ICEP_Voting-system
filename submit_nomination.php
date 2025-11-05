@@ -1,5 +1,5 @@
 <?php
-include 'db_connect.php';
+include 'conf/db_connect.php';
 session_start();
 
 $student_id = $_SESSION['student_id'];

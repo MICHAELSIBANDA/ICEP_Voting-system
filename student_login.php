@@ -1,5 +1,5 @@
 <?php
-include 'db_connect.php';
+include 'conf/db_connect.php';
 session_start();
 
 $email = $_POST['email'] ?? '';

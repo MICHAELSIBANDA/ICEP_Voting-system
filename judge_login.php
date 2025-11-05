@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-include 'db_connect.php';
+include 'conf/db_connect.php';
 session_start();
 
 // Get POST data

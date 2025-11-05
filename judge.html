@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ICEP AWARDS 2025 - Judge Nomination Portal</title>
-    <link rel="stylesheet" href="judge.css">
+    <link rel="stylesheet" href="assets/judge.css">
 </head>
 <body>
     <div class="container">
@@ -155,103 +155,25 @@
 
     <script>
         // Updated project data organized by campus with all teams
-        const projects = [
-            // Soshanguve Campus Projects
-            { 
-                id: 'PROJ001', 
-                name: 'EDUCONNECT', 
-                team: 'Ambiwe Masingi, Siphiweyinko Zulu, Lesego Mokoena, Mandlekosi Nyathi, Tondani Mabasa, Tshepo Setuke, Kagiso Lebyana, Ramphelane Kgopa, Lethabo Letswalo, Xolane Shabalala, Connie Mokabane, Kagiso Mogashoa, Lucky Madigoe, Phokuhle Dlamini, Blessing Ntshodwe, Kamogelo Mathiane',
-                description: 'Educational platform connecting students with resources and support services.',
-                category: 'Educational Technology',
-                year: '2025',
-                campus: 'Soshanguve'
-            },
-            { 
-                id: 'PROJ002', 
-                name: 'DOCSECURE', 
-                team: 'Nzuzo Khanyile, Precious Hlahla, Siphokuhle Komeni, Boitumelo Molekoa, Hluleko Hobyani, Junior Selatlha, Koketso Boya, Vuthlare Rikhotso',
-                description: 'Secure document management and sharing system for academic institutions.',
-                category: 'Security',
-                year: '2025',
-                campus: 'Soshanguve'
-            },
-            { 
-                id: 'PROJ003', 
-                name: 'TUTReport HUB', 
-                team: 'Joe Junior Mabatha, Joina Mofokeng, Xolani Nkabinde, Kamogelo Mokhomole, Kenny Mnisi, Unarine Bryan Nevhutalu, Kearabetswe Maroleni, Prince Matsekoleng, Ndabisukile Ndabisukile, Yinhla Ndlovu, Nkosingiphile Nkalanga, Joy Mthethwa, Siphiweyinko Zulu, Siphelele Miya, Vhahangwele Mutheiwana',
-                description: 'Centralized platform for academic reporting and analytics.',
-                category: 'Academic Systems',
-                year: '2025',
-                campus: 'Soshanguve'
-            },
-            { 
-                id: 'PROJ004', 
-                name: 'COMPUTING TRACK SYSTEM (TUT GUIDE APP)', 
-                team: 'Yamkela Zele, Nonjabulo Guma, Innocent Mabasa, Chantelle Moeng, Sihle Mathole, Phodiso Ramushu, Kaizer Maphoso, Kamogelo Mokhomole',
-                description: 'Campus navigation and information system for TUT students.',
-                category: 'Mobile Development',
-                year: '2025',
-                campus: 'Soshanguve'
-            },
-            { 
-                id: 'PROJ005', 
-                name: 'INTELLIGENT SERVICE DELIVERY (MunicipalityHub)', 
-                team: 'Phiwe Mzizi, Sifiso Jantjie, Olerato Manye, Leago Shalang, Della Raolane, Khomotjo Modiba, Dimpho Tukane',
-                description: 'Smart platform connecting citizens with municipal services through IoT and data analytics.',
-                category: 'Smart Cities',
-                year: '2025',
-                campus: 'Soshanguve'
-            },
-            { 
-                id: 'PROJ006', 
-                name: 'DIGIFIKILE (EduBridge)', 
-                team: 'Lethabo Tlala, Mandlenkosi Nyathi, Inamfumu Ketsia Mwanza, Siphelele Miya, Kearabetswe Maroleni, Xolane Shabalala, Lucky Madigoe, Siphiweyinkosi Zulu',
-                description: 'Gamified mobile app teaching digital skills to township and rural youth.',
-                category: 'Educational Technology',
-                year: '2025',
-                campus: 'Soshanguve'
-            },
-            { 
-                id: 'PROJ007', 
-                name: 'SPORTS PERFORMANCE APP', 
-                team: 'Ntombi Manonga, Matome Maake, Katlego Sebola, Brace Mathabela, Tokollo Setetemela, Thabiso Bokaba, Jabulile Mhlanga, Tiyiselani Mlangeni',
-                description: 'Wearable-powered app capturing athlete metrics and delivering performance insights.',
-                category: 'Sports Technology',
-                year: '2025',
-                campus: 'Soshanguve'
-            },
-            
-            // Polokwane Campus Projects
-            { 
-                id: 'PROJ008', 
-                name: 'FUEL MANAGEMENT SYSTEM (LiquiTech)', 
-                team: 'Kulani Shaun Mabasa, Mkhuleko Shongwe, Kamogelo Taylor Mmekwa, Neo Terrence Mkhabela, Melusi Hopewell Mathebula, Bothale Mpatlanyane',
-                description: 'Application tracking fuel management and preventing theft in diesel supply fleets.',
-                category: 'Logistics Technology',
-                year: '2025',
-                campus: 'Polokwane'
-            },
-            { 
-                id: 'PROJ009', 
-                name: 'e-LibraryLog', 
-                team: 'Asisipho Mjojeli, Ronewa Nthabeni, Khensani Khoza, Kamogelo Thlong, Samukelo Khumalo, Tshepo Mtungwa, Lesego Molalatladi, Asimbonge Msizi, Madimetja Kgobe, Mpho Ramaloko, Nokwanda Hlatshwayo, Thabiso Mapoulo',
-                description: 'Digital library management and tracking system.',
-                category: 'Educational Resources',
-                year: '2025',
-                campus: 'Polokwane'
-            },
-            
-            // eMalahleni Campus Project
-            { 
-                id: 'PROJ010', 
-                name: 'CampusTime', 
-                team: 'Nkgasha Matlou, Ndivho Ramatshimbila, Musawekosi Manzini, Shauntel Mtshweni, Lindokuhle Zulu, Kgethego Mabilo, Kgomotso Ngomane, Adel Baloyi, Amogelang Thomson, Bokang Malebo, Lindani Mayisela, Nomcebo Kubheka, Keabetswe Anta, Mashudu Nemutudi, Mapoulo Manuel',
-                description: 'Campus scheduling and time management platform.',
-                category: 'Productivity',
-                year: '2025',
-                campus: 'eMalahleni'
-            }
-        ];
+        let projects = [];
+
+        async function loadProjectsFromDB() {
+       try {
+        const res = await fetch('fetch_projects.php');
+        projects = await res.json();
+
+        if (!Array.isArray(projects) || projects.length === 0) {
+            console.warn('⚠️ No projects found in database.');
+        }
+
+        createCategorySections();
+        populateCategoryProjects();
+        updateProgressInfo();
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+    }
+}
+
 
         // Updated categories with the new names
         const categories = {
@@ -701,49 +623,66 @@
         }
 
         // Submit all nominations
-        function submitAllNominations() {
-            closeConfirmation();
-            
-            // Close submissions
-            submissionsClosed = true;
-            
-            // Disable nomination button on dashboard
-            const nominationBtn = document.getElementById('nominationBtn');
-            nominationBtn.disabled = true;
-            nominationBtn.innerHTML = '✅ EVALUATIONS COMPLETED';
-            nominationBtn.classList.remove('btn');
-            nominationBtn.classList.add('btn-secondary');
-            
-            // Show completed badge
-            document.getElementById('completedBadge').style.display = 'inline-block';
+        async function submitAllNominations() {
+    closeConfirmation();
+    submissionsClosed = true;
 
-            // Update dashboard to show completed nominations
-            updateDashboardNominations();
+    const nominationBtn = document.getElementById('nominationBtn');
+    nominationBtn.disabled = true;
+    nominationBtn.innerHTML = '✅ EVALUATIONS COMPLETED';
+    nominationBtn.classList.remove('btn');
+    nominationBtn.classList.add('btn-secondary');
 
-            // Show submission summary
-            const summary = document.getElementById('submission-summary');
-            summary.innerHTML = '<h4>Your submitted project evaluations:</h4>';
-            
-            allNominations.forEach(nomination => {
-                summary.innerHTML += `
-                    <div style="margin: 10px 0; padding: 10px; background: white; border-radius: 5px;">
-                        <strong>${categories[nomination.category]}</strong><br>
-                        <em>Project: ${nomination.project.name}</em><br>
-                        <small>Team: ${nomination.project.team} | Campus: ${nomination.project.campus}</small>
-                    </div>
-                `;
-            });
+    document.getElementById('completedBadge').style.display = 'inline-block';
 
-            summary.innerHTML += `<div style="margin-top: 15px; padding: 10px; background: #27ae60; color: white; border-radius: 5px;">
-                <strong>Total Project Evaluations Submitted: ${allNominations.length}</strong><br>
-                <small>You cannot make any more evaluations.</small>
-            </div>`;
+    updateDashboardNominations();
 
+    const evaluations = allNominations.map(nom => ({
+        project_id: nom.project.id,
+        score: 10, // optional: you can later add a field for score input
+        comments: `Judge selected ${nom.project.name} for ${categories[nom.category]}`
+    }));
+
+    try {
+        const response = await fetch('save_nominations.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ evaluations })
+        });
+
+        const result = await response.json();
+        if (result.status === 'success') {
+            console.log('✅ Saved to database:', result);
             showScreen('screen-confirmation');
+        } else {
+            alert('⚠️ ' + result.message);
         }
+    } catch (err) {
+        console.error('Error submitting evaluations:', err);
+        alert('❌ Could not save evaluations.');
+    }
 
-        
-        // Judge login function
+    // Show summary
+    const summary = document.getElementById('submission-summary');
+    summary.innerHTML = '<h4>Your submitted project evaluations:</h4>';
+
+    allNominations.forEach(nomination => {
+        summary.innerHTML += `
+            <div style="margin: 10px 0; padding: 10px; background: white; border-radius: 5px;">
+                <strong>${categories[nomination.category]}</strong><br>
+                <em>Project: ${nomination.project.name}</em><br>
+                <small>Team: ${nomination.project.team} | Campus: ${nomination.project.campus}</small>
+            </div>
+        `;
+    });
+
+    summary.innerHTML += `<div style="margin-top: 15px; padding: 10px; background: #27ae60; color: white; border-radius: 5px;">
+        <strong>Total Project Evaluations Submitted: ${allNominations.length}</strong><br>
+        <small>Your evaluations have been saved successfully.</small>
+    </div>`;
+}
+
+// Judge login function
 function login() {
     const email = document.getElementById('judgeEmail').value.trim();
     const password = document.getElementById('password').value.trim();
@@ -793,6 +732,9 @@ function login() {
             document.getElementById('judgeEmail').value = 'judge.smith@tut.ac.za';
             document.getElementById('password').value = 'password';
         });
+
+        document.addEventListener('DOMContentLoaded', loadProjectsFromDB);
+
     </script>
 </body>
 </html>
